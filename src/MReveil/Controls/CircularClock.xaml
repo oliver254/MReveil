@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:drawables="clr-namespace:MReveil.Drawables"
+             x:Class="MReveil.Controls.CircularClock">
+    <VerticalStackLayout  HorizontalOptions="Center" VerticalOptions="Center">
+        <Grid>
+            <GraphicsView  x:Name="SecondView" 
+                          BackgroundColor="{StaticResource Primary}"
+                          HeightRequest="400"
+                           WidthRequest="400"/>
+            <Label x:Name="TimeLabel" 
+                   HorizontalOptions="Center" 
+                   Text="test" 
+                   VerticalOptions="Center" />
+        </Grid>
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Button x:Name="StartButton"
+                    Clicked="StartButton_OnClicked"
+                    Text="Start"
+                    TextColor="WhiteSmoke"/>
+            <Button x:Name="ResetButton"
+                Text="Reset"
+                TextColor="WhiteSmoke"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentView>    
