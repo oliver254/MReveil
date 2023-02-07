@@ -11,8 +11,8 @@
                            WidthRequest="400"/>
             <Label x:Name="TimeLabel" 
                    HorizontalOptions="Center" 
-                   Text="test" 
-                   VerticalOptions="Center" />
+                   Text="" 
+                   VerticalOptions="Center" FontSize="Large" />
         </Grid>
         <HorizontalStackLayout HorizontalOptions="Center">
             <Button x:Name="StartButton"
