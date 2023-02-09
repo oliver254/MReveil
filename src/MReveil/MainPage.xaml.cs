@@ -1,4 +1,5 @@
 ﻿using MReveil.Drawables;
+using MReveil.ViewModels;
 
 namespace MReveil
 {
@@ -6,10 +7,11 @@ namespace MReveil
     {
         private readonly IDrawable _arcDrawable;
 
-        public MainPage()
+        public MainPage(MainViewModel viewModel)
         {
             InitializeComponent();
             _arcDrawable = new CircularDrawable();
+            BindingContext = viewModel;
         }
 
         protected override void OnAppearing()

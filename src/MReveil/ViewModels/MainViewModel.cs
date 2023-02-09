@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MReveil.Models;
 using System.Windows.Input;
 
 namespace MReveil.ViewModels
@@ -8,7 +9,7 @@ namespace MReveil.ViewModels
     {
 
         [RelayCommand]
-        public void Start()
+        public void Start(ActivityType test)
         {
 
         }

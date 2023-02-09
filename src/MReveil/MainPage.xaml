@@ -2,11 +2,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:MReveil.Controls"
+             xmlns:models="clr-namespace:MReveil.Models"
              xmlns:viewmodels="clr-namespace:MReveil.ViewModels"
              x:Class="MReveil.MainPage"
              x:DataType="viewmodels:MainViewModel">
 
     <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-        <controls:CircularClock/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <HorizontalStackLayout Padding="10">
+                <Button Command="{Binding StartCommand}" CommandParameter="{x:Static models:ActivityType.Pomodoro}"  Text="Pomodoro"/>
+                <Button Text="Short break"/>
+                <Button Text="Long break"/>
+            </HorizontalStackLayout>
+            <controls:CircularClock Grid.Row="1"/>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>
