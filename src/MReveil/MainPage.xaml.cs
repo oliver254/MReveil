@@ -6,6 +6,7 @@ namespace MReveil
     public partial class MainPage : ContentPage
     {
         private readonly IDrawable _arcDrawable;
+        private IDispatcherTimer _timer;
 
         public MainPage(MainViewModel viewModel)
         {
@@ -14,11 +15,26 @@ namespace MReveil
             BindingContext = viewModel;
         }
 
+        ~MainPage() => _timer.Tick -= OnTimerTick;
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            //ProgressView.Drawable = _arcDrawable;
+            _timer = Dispatcher.CreateTimer();
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick += OnTimerTick;
+            _timer.Start();
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            _timer.Stop();
+        }
+
+        private void OnTimerTick(object sender, EventArgs e)
+        {
+            clock.UpdateArcs();
+        }
     }
 }

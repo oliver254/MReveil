@@ -8,17 +8,32 @@
              x:DataType="viewmodels:MainViewModel">
 
     <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-        <Grid>
+        <Grid  HeightRequest="500">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition/>
+                <RowDefinition Height="60" />
+                <RowDefinition />
+                <RowDefinition Height="60" />
             </Grid.RowDefinitions>
-            <HorizontalStackLayout Padding="10">
-                <Button Command="{Binding StartCommand}" CommandParameter="{x:Static models:ActivityType.Pomodoro}"  Text="Pomodoro"/>
-                <Button Text="Short break"/>
-                <Button Text="Long break"/>
+            <HorizontalStackLayout HorizontalOptions="Center" Padding="10" Spacing="10">
+                <Button Command="{Binding SetDurationCommand}"
+                        CommandParameter="{x:Static models:ActivityType.Pomodoro}"
+                        Text="Pomodoro" />
+                <Button Command="{Binding SetDurationCommand}"
+                        CommandParameter="{x:Static models:ActivityType.ShortBreak}"
+                        Text="Short break" />
+                <Button Text="Long break" />
             </HorizontalStackLayout>
-            <controls:CircularClock Grid.Row="1"/>
+            <controls:CircularClock x:Name="clock"
+                                    EndTime="{Binding EndTime}"
+                                    Grid.Row="1" />
+            <!--<controls:AnalogClock Grid.Row="1" />-->
+            <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center" Padding="10" Spacing="10">
+                <Button x:Name="StartButton"
+                        Command="{Binding StartCommand}"
+                        Text="Start"
+                        TextColor="WhiteSmoke" />
+                <Button x:Name="ResetButton"  Text="Reset" TextColor="WhiteSmoke" />
+            </HorizontalStackLayout>
         </Grid>
     </VerticalStackLayout>
 </ContentPage>

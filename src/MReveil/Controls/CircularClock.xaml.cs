@@ -4,41 +4,41 @@ namespace MReveil.Controls;
 
 public partial class CircularClock : ContentView
 {
+    public static readonly BindableProperty EndTimeProperty = BindableProperty.Create(nameof(EndTime), typeof(DateTime?), typeof(CircularClock), null, propertyChanged: OnEndTimeChanged);
     private readonly CircularDrawable _circularDrawable;
-
-    private CancellationTokenSource _cancellationTokenSource = new();
-    private DateTime _endTime;
-
 
     public CircularClock()
     {
         InitializeComponent();
         _circularDrawable = new CircularDrawable();
-        SecondView.Drawable = _circularDrawable;
-    } 
-
-    private void StartButton_OnClicked(object sender, EventArgs e)
-    {
-        _endTime = DateTime.Now.AddMinutes(5);
-        _cancellationTokenSource = new CancellationTokenSource();
-        UpdateArcs();
+        secondView.Drawable = _circularDrawable;
     }
-    private async void UpdateArcs()
+
+    public DateTime? EndTime
     {
-        while (!_cancellationTokenSource.Token.IsCancellationRequested)
+        get { return (DateTime?)GetValue(EndTimeProperty); }
+        set { SetValue(EndTimeProperty, value); }
+    }
+
+    private static void OnEndTimeChanged(BindableObject d, object oldValue, object value)
+    {
+        CircularClock clock = (CircularClock)d;
+    }
+
+    public void UpdateArcs()
+    {
+        if (EndTime == null)
+            return;
+
+        TimeSpan elapsedTime = EndTime.Value - DateTime.Now;
+        TimeLabel.Text = elapsedTime.ToString(@"hh\:mm\:ss");
+        _circularDrawable.Minute = elapsedTime.Minutes;
+        _circularDrawable.Second = elapsedTime.Seconds;
+
+        secondView.Invalidate();
+        if (elapsedTime.TotalSeconds <= 0)
         {
-            TimeSpan elapsedTime = _endTime - DateTime.Now;
-            TimeLabel.Text = elapsedTime.ToString(@"hh\:mm\:ss");
-            _circularDrawable.Minute = elapsedTime.Minutes;
-            _circularDrawable.Second = elapsedTime.Seconds;
-           
-            SecondView.Invalidate();
-            if (elapsedTime.TotalSeconds <= 0)
-            {
-                _cancellationTokenSource.Cancel();
-                return;
-            }
-            await Task.Delay(500);
+            return;
         }
     }
 }

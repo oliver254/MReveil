@@ -3,25 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:drawables="clr-namespace:MReveil.Drawables"
              x:Class="MReveil.Controls.CircularClock">
-    <VerticalStackLayout  HorizontalOptions="Center" VerticalOptions="Center">
+    <VerticalStackLayout x:Name="mainLayout"  
+                         HorizontalOptions="Center" 
+                         VerticalOptions="Center">
+        <!--<VisualStateManager.VisualStateGroups>
+            <VisualStateGroup Name="WorkStates">
+                <VisualState Name="Work">
+                    <VisualState.Setters>
+                        <Setter TargetName="StartButton"
+                                Property="Button.Text"
+                                Value="test" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>-->
         <Grid>
-            <GraphicsView  x:Name="SecondView" 
-                          BackgroundColor="{StaticResource Primary}"
-                          HeightRequest="400"
-                           WidthRequest="400"/>
-            <Label x:Name="TimeLabel" 
-                   HorizontalOptions="Center" 
-                   Text="" 
+            <GraphicsView  x:Name="secondView"
+                           HeightRequest="400"
+                           WidthRequest="400" />
+            <Label x:Name="TimeLabel"
+                   HorizontalOptions="Center"
+                   Text=""
                    VerticalOptions="Center" FontSize="Large" />
         </Grid>
-        <HorizontalStackLayout HorizontalOptions="Center">
-            <Button x:Name="StartButton"
-                    Clicked="StartButton_OnClicked"
-                    Text="Start"
-                    TextColor="WhiteSmoke"/>
-            <Button x:Name="ResetButton"
-                Text="Reset"
-                TextColor="WhiteSmoke"/>
-        </HorizontalStackLayout>
     </VerticalStackLayout>
-</ContentView>    
+</ContentView>
