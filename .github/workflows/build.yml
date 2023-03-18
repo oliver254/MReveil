@@ -2,17 +2,9 @@ name: build
 
 on:
   push:
-    branches: [ "dev" ]
-    paths:
-    - '**.cs'
-    - '**.csproj'
-    - '**.xaml'    
+    branches: [ "dev" ]   
   pull_request:
     branches: [ "dev" ]
-    paths:
-    - '**.cs'
-    - '**.csproj'
-    - '**.xaml'    
     
 env:
   DOTNET_VERSION: '7.0.x' # The .NET SDK version to use    
@@ -31,8 +23,6 @@ jobs:
         
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.1
-      with:
-        vs-prerelease: true
     
     - name: Install .NET workloads
       shell: pwsh
