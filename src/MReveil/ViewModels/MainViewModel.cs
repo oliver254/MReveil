@@ -6,10 +6,8 @@ namespace MReveil.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-        private TimeSpan? _duration;
-
         [ObservableProperty]
-        DateTime? _endTime;
+        TimeSpan? _duration;
 
         [RelayCommand]
         public void SetDuration(ActivityType activityType)
@@ -18,37 +16,24 @@ namespace MReveil.ViewModels
             {
                 case ActivityType.Pomodoro:
                     {
-                        _duration = TimeSpan.FromMinutes(45);
+                        Duration = TimeSpan.FromMinutes(45);
                         break;
                     }
                 case ActivityType.LongBreak:
                     {
-                        _duration = TimeSpan.FromMinutes(15);
+                        Duration = TimeSpan.FromMinutes(15);
                         break;                            
                     }
                 case ActivityType.ShortBreak:
                     {
-                        _duration = TimeSpan.FromMinutes(5);
+                        Duration = TimeSpan.FromMinutes(5);
                         break;
                     }
                 default:
                     {
-                        _duration = null;
+                        Duration = null;
                         break;
                     }
-            }
-        }
-
-        [RelayCommand]
-        public void Start()
-        {
-            if(_duration == null)
-            {
-                EndTime = null;
-            }
-            else
-            {
-                EndTime = DateTime.Now.Add(_duration.Value);
             }
         }
 

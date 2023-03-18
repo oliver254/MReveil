@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:drawables="clr-namespace:MReveil.Drawables"
              x:Class="MReveil.Controls.CircularClock">
-    <VerticalStackLayout x:Name="mainLayout"  
-                         HorizontalOptions="Center" 
+    <VerticalStackLayout x:Name="mainLayout"
+                         HorizontalOptions="Center"
                          VerticalOptions="Center">
         <!--<VisualStateManager.VisualStateGroups>
             <VisualStateGroup Name="WorkStates">
@@ -18,13 +18,28 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>-->
         <Grid>
-            <GraphicsView  x:Name="secondView"
+            <GraphicsView  x:Name="clockView"
                            HeightRequest="400"
                            WidthRequest="400" />
-            <Label x:Name="TimeLabel"
+            <Label x:Name="timeLabel"
                    HorizontalOptions="Center"
                    Text=""
                    VerticalOptions="Center" FontSize="Large" />
         </Grid>
+        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center" Padding="10" Spacing="10">
+            <Button x:Name="startButton"
+                    Clicked="Start_Clicked"
+                    Text="Start"
+                    TextColor="WhiteSmoke" />
+            <Button x:Name="stopButton"
+                    Clicked="Stop_Clicked"
+                    IsVisible="false"
+                    Text="Stop"
+                    TextColor="WhiteSmoke" />
+            <Button x:Name="resetButton" 
+                    Clicked="Reset_Clicked"
+                    Text="Reset" 
+                    TextColor="WhiteSmoke" />
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentView>

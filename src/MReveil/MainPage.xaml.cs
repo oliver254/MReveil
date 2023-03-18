@@ -34,7 +34,7 @@ namespace MReveil
 
         private void OnTimerTick(object sender, EventArgs e)
         {
-            clock.UpdateArcs();
+            clock.DrawArcs();
         }
     }
 }
