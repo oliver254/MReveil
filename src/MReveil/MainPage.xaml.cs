@@ -1,4 +1,5 @@
-﻿using MReveil.Drawables;
+﻿using CommunityToolkit.Maui.Views;
+using MReveil.Drawables;
 using MReveil.ViewModels;
 
 namespace MReveil
@@ -24,6 +25,7 @@ namespace MReveil
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += OnTimerTick;
             _timer.Start();
+            mediaElement.Source = MediaSource.FromResource("alarm-clock.mp3");
         }
 
         protected override void OnDisappearing()
@@ -31,10 +33,19 @@ namespace MReveil
             base.OnDisappearing();
             _timer.Stop();
         }
-
+        private void ContentPage_Unloaded(object sender, EventArgs e)
+        {
+            // Stop and cleanup MediaElement when we navigate away
+            mediaElement.Handler?.DisconnectHandler();
+        }
         private void OnTimerTick(object sender, EventArgs e)
         {
             clock.DrawArcs();
+        }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            mediaElement.Play();
         }
     }
 }

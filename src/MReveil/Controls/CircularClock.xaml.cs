@@ -30,7 +30,7 @@ public partial class CircularClock : ContentView
         {
             case ClockState.Alarm:
                 {
-
+                    mediaElement.Play();
                     break;
                 }
             case ClockState.Timer:
@@ -79,6 +79,12 @@ public partial class CircularClock : ContentView
         }
     }
 
+    private void ContentView_Unloaded(object sender, EventArgs e)
+    {
+        // Stop and cleanup MediaElement when we navigate away
+        mediaElement.Handler?.DisconnectHandler();
+    }
+
     private void Reset_Clicked(object sender, EventArgs e)
     {
         _state = ClockState.Clock;
@@ -92,6 +98,7 @@ public partial class CircularClock : ContentView
         _endTime = DateTime.Now.Add(Duration.Value);
         startButton.IsVisible = false;
         stopButton.IsVisible = true;
+        mediaElement.Stop();
     }
 
     private void Stop_Clicked(object sender, EventArgs e)
@@ -100,5 +107,6 @@ public partial class CircularClock : ContentView
         _state = ClockState.Duration;
         startButton.IsVisible = true;
         stopButton.IsVisible = false;
+        mediaElement.Stop();
     }
 }

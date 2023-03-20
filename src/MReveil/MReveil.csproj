@@ -15,7 +15,7 @@
 		<ApplicationTitle>MReveil</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.mreveil</ApplicationId>
+		<ApplicationId>com.mbonbsoft.mreveil</ApplicationId>
 		<ApplicationIdGuid>936276A6-4466-410B-808A-18A8A2F11987</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -46,6 +46,11 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	    <EmbeddedResource Include="Resources\Embedded\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Raw\alarm-clock.mp3" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -58,7 +63,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="5.0.0" />
+	  <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="1.0.2" />
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Embedded\" />
 	</ItemGroup>
 
 </Project>
