@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Views;
 using MReveil.Drawables;
 using MReveil.Models;
 
@@ -16,6 +17,7 @@ public partial class CircularClock : ContentView
         _state = ClockState.Clock;
         _circularDrawable = new CircularDrawable();
         clockView.Drawable = _circularDrawable;
+        mediaElement.Source = MediaSource.FromResource("bird.mp3");
     }
 
     public TimeSpan? Duration
@@ -76,9 +78,13 @@ public partial class CircularClock : ContentView
         if (value != null)
         {
             clockView._state = ClockState.Duration;
+            clockView.startButton.IsEnabled = true;
         }
-    }
-
+        else
+        {
+            clockView.startButton.IsEnabled = false;
+        }
+    }    
     private void ContentView_Unloaded(object sender, EventArgs e)
     {
         // Stop and cleanup MediaElement when we navigate away
