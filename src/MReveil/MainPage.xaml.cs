@@ -1,4 +1,5 @@
-﻿using MReveil.Drawables;
+﻿using CommunityToolkit.Maui.Views;
+using MReveil.Drawables;
 using MReveil.ViewModels;
 
 namespace MReveil
@@ -24,14 +25,13 @@ namespace MReveil
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += OnTimerTick;
             _timer.Start();
-        }
 
+        }
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
             _timer.Stop();
         }
-
         private void OnTimerTick(object sender, EventArgs e)
         {
             clock.DrawArcs();

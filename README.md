@@ -12,3 +12,8 @@
 * *An online Pomodoro Timer to boost your productivity*, Pomofocus.io, [Pomofocus](https://pomofocus.io/)
 * *.NET MAUI Samples*, Samples for .NET Multi-Platform App UI (.NET MAUI), [maui-samples](https://github.com/dotnet/maui-samples)
 
+### Sounds
+
+* Free Sound Effects for Download - Pixabay, [Pixabay](https://pixabay.com/sound-effects/)
+* **alarm clock short**, Pixabay, [ZyryTSounds](https://pixabay.com/sound-effects/alarm-clock-short-6402/)
+* **cardinal**, Pixabay, [nerdwithnikon](https://pixabay.com/sound-effects/cardinal-37075/)

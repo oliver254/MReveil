@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using CommunityToolkit.Maui;
 using MReveil.ViewModels;
 
 namespace MReveil
@@ -11,6 +10,8 @@ namespace MReveil
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
+                .UseMauiCommunityToolkitMediaElement()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -19,7 +20,6 @@ namespace MReveil
 
             // pages
             builder.Services.AddSingleton<MainPage>();
-
 
             // view models
             builder.Services.AddSingleton<MainViewModel>();
