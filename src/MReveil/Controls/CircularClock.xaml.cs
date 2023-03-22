@@ -94,7 +94,10 @@ public partial class CircularClock : ContentView
     private void Reset_Clicked(object sender, EventArgs e)
     {
         _state = ClockState.Clock;
+        _endTime = null;
+        Duration = null;
         startButton.IsVisible = true;
+        startButton.IsEnabled = false;
         stopButton.IsVisible = false;
     }
 

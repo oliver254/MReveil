@@ -22,10 +22,12 @@
                 <Button Command="{Binding SetDurationCommand}"
                         CommandParameter="{x:Static models:ActivityType.ShortBreak}"
                         Text="Short break" />
-                <Button Text="Long break" />
+                <Button Command="{Binding SetDurationCommand}"
+                        CommandParameter="{x:Static models:ActivityType.LongBreak}"
+                        Text="Long break" />
             </HorizontalStackLayout>
             <controls:CircularClock x:Name="clock"
-                                    Duration="{Binding Duration}"
+                                    Duration="{Binding Duration, Mode=TwoWay}"
                                     Grid.Row="1"/>
 
             <!--<controls:AnalogClock Grid.Row="1" />-->

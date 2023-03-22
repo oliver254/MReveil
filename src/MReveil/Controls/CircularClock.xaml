@@ -47,8 +47,8 @@
         </HorizontalStackLayout>
         <toolkit:MediaElement x:Name="mediaElement"
                               IsVisible="False"
-                              ShouldAutoPlay="True"
+                              ShouldAutoPlay="False"
                               ShouldLoopPlayback="True"
-                              ShouldShowPlaybackControls="True" />
+                              ShouldShowPlaybackControls="False" />
     </VerticalStackLayout>
 </ContentView>
