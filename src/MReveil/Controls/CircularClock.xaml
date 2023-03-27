@@ -9,17 +9,24 @@
     <VerticalStackLayout x:Name="mainLayout"
                          HorizontalOptions="Center"
                          VerticalOptions="Center">
-        <!--<VisualStateManager.VisualStateGroups>
-            <VisualStateGroup Name="WorkStates">
-                <VisualState Name="Work">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState Name="Start">
                     <VisualState.Setters>
-                        <Setter TargetName="StartButton"
+                        <Setter TargetName="sprintButton"
                                 Property="Button.Text"
-                                Value="test" />
+                                Value="Start" />
                     </VisualState.Setters>
                 </VisualState>
+                <VisualState Name="Stop">
+                    <VisualState.Setters>
+                        <Setter TargetName="sprintButton"
+                                Property="Button.Text"
+                                Value="Stop" />
+                    </VisualState.Setters>
+                </VisualState>                
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
+        </VisualStateManager.VisualStateGroups>
         <Grid>
             <GraphicsView  x:Name="clockView"
                            HeightRequest="400"
@@ -30,20 +37,12 @@
                    VerticalOptions="Center" FontSize="Large" />
         </Grid>
         <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center" Padding="10" Spacing="10">
-            <Button x:Name="startButton"
-                    Clicked="Start_Clicked"
-                    IsEnabled="False"
-                    Text="Start"
-                    TextColor="WhiteSmoke" />
-            <Button x:Name="stopButton"
-                    Clicked="Stop_Clicked"
-                    IsVisible="false"
-                    Text="Stop"
-                    TextColor="WhiteSmoke" />
+            <Button x:Name="sprintButton"
+                    Clicked="Sprint_Clicked"
+                    Text="Start"/>
             <Button x:Name="resetButton"
                     Clicked="Reset_Clicked"
-                    Text="Reset"
-                    TextColor="WhiteSmoke" />
+                    Text="Reset"/>
         </HorizontalStackLayout>
         <toolkit:MediaElement x:Name="mediaElement"
                               IsVisible="False"

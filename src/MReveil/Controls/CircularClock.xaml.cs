@@ -9,12 +9,13 @@ public partial class CircularClock : ContentView
     public static readonly BindableProperty DurationProperty = BindableProperty.Create(nameof(Duration), typeof(TimeSpan?), typeof(CircularClock), null, propertyChanged: OnDurationChanged);
     private readonly CircularDrawable _circularDrawable;
     private DateTime? _endTime;
-    private ClockState _state;
+    private SprintState _state;
+    private TimeSpan? _sprint;
 
     public CircularClock()
     {
         InitializeComponent();
-        _state = ClockState.Clock;
+        _state = SprintState.Clock;
         _circularDrawable = new CircularDrawable();
         clockView.Drawable = _circularDrawable;
         mediaElement.Source = MediaSource.FromResource("bird.mp3");
@@ -30,17 +31,17 @@ public partial class CircularClock : ContentView
     {
         switch (_state)
         {
-            case ClockState.Alarm:
+            case SprintState.Completed:
                 {
                     mediaElement.Play();
                     break;
                 }
-            case ClockState.Timer:
-                {
+            case SprintState.Run:
+                {                    
                     TimeSpan elapsedTime = _endTime.Value - DateTime.Now;
                     if (elapsedTime.TotalSeconds < 0)
                     {
-                        _state = ClockState.Alarm;
+                        _state = SprintState.Completed;
                         return;
                     }
                     timeLabel.Text = elapsedTime.ToString(@"hh\:mm\:ss");
@@ -49,11 +50,11 @@ public partial class CircularClock : ContentView
                     clockView.Invalidate();
                     break;
                 }
-            case ClockState.Duration:
+            case SprintState.Start:
                 {
-                    if (Duration.HasValue)
+                    if (_sprint.HasValue)
                     {
-                        timeLabel.Text = Duration.Value.ToString(@"hh\:mm\:ss");
+                        timeLabel.Text = _sprint.Value.ToString(@"hh\:mm\:ss");
                         _circularDrawable.Minute = Duration.Value.Minutes;
                         _circularDrawable.Second = Duration.Value.Seconds;
                         clockView.Invalidate();
@@ -75,14 +76,17 @@ public partial class CircularClock : ContentView
     private static void OnDurationChanged(BindableObject d, object oldValue, object value)
     {
         var clockView = (CircularClock)d;
-        if (value != null)
+        var durationValue = (TimeSpan?)value;
+
+        if(durationValue != null)
         {
-            clockView._state = ClockState.Duration;
-            clockView.startButton.IsEnabled = true;
+            clockView._sprint = durationValue;
+            clockView._state = SprintState.Start;
         }
         else
         {
-            clockView.startButton.IsEnabled = false;
+            clockView._sprint = null;
+            clockView._state = SprintState.Clock;
         }
     }    
     private void ContentView_Unloaded(object sender, EventArgs e)
@@ -93,29 +97,54 @@ public partial class CircularClock : ContentView
 
     private void Reset_Clicked(object sender, EventArgs e)
     {
-        _state = ClockState.Clock;
+        _state = SprintState.Clock;
         _endTime = null;
-        Duration = null;
-        startButton.IsVisible = true;
-        startButton.IsEnabled = false;
-        stopButton.IsVisible = false;
+        _sprint = null;
     }
 
-    private void Start_Clicked(object sender, EventArgs e)
+    private void Sprint_Clicked(object sender, EventArgs e)
     {
-        _state = ClockState.Timer;
-        _endTime = DateTime.Now.Add(Duration.Value);
-        startButton.IsVisible = false;
-        stopButton.IsVisible = true;
+        switch(_state)
+        {
+            case SprintState.Start:
+                {
+                    Run();
+                    break;
+                }
+            case SprintState.Run:
+                {
+                    Stop();
+                    break;
+                }
+            default:
+                {
+                    Reset();
+                    break;
+                }
+        }
+    }
+    private void Run()
+    {
+        if (_sprint == null)
+            return;
+        _endTime = DateTime.Now.Add(_sprint.Value);
+        _state = SprintState.Run;
+        VisualStateManager.GoToState(mainLayout, "Stop");
+
+    }
+    private void Reset()
+    {
+        _state = SprintState.Clock;
+        _endTime = null;        
+        VisualStateManager.GoToState(mainLayout, "Start");
+        mediaElement.Stop();
+    }
+    private void Stop()
+    {
+        _sprint = _endTime - DateTime.Now;        
+        _state = SprintState.Start;
+        VisualStateManager.GoToState(mainLayout, "Start");
         mediaElement.Stop();
     }
 
-    private void Stop_Clicked(object sender, EventArgs e)
-    {
-        Duration = _endTime.Value - DateTime.Now;
-        _state = ClockState.Duration;
-        startButton.IsVisible = true;
-        stopButton.IsVisible = false;
-        mediaElement.Stop();
-    }
 }

@@ -15,7 +15,7 @@
 		<ApplicationTitle>MReveil</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.mbonbsoft.mreveil</ApplicationId>
+		<ApplicationId>com.monbsoft.mreveil</ApplicationId>
 		<ApplicationIdGuid>936276A6-4466-410B-808A-18A8A2F11987</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -58,9 +58,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Controls\AnalogClock.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Controls\CircularClock.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
