@@ -58,7 +58,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Controls\CircularClock.xaml">
+	  <MauiXaml Update="Controls\CircularClock2.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
@@ -71,6 +71,12 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Embedded\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Controls\CircularClock2.xaml.cs">
+	    <DependentUpon>CircularClock2.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

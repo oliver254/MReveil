@@ -4,7 +4,7 @@ using MReveil.Models;
 
 namespace MReveil.Controls;
 
-public partial class CircularClock : ContentView
+public partial class CircularClock2 : ContentView
 {
     public static readonly BindableProperty DurationProperty = BindableProperty.Create(nameof(Duration), typeof(TimeSpan?), typeof(CircularClock), null, propertyChanged: OnDurationChanged);
     private readonly CircularDrawable _circularDrawable;
@@ -12,7 +12,7 @@ public partial class CircularClock : ContentView
     private SprintState _state;
     private TimeSpan? _sprint;
 
-    public CircularClock()
+    public CircularClock2()
     {
         InitializeComponent();
         _state = SprintState.Clock;

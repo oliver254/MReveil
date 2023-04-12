@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MReveil.Models;
-
-public enum ClockState
+namespace MReveil.Models
 {
-    Alarm,
-    Clock,
-    Duration,
-    Timer
+    internal class SprintStatus
+    {
+    }
 }
