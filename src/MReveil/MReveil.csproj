@@ -15,7 +15,7 @@
 		<ApplicationTitle>MReveil</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.mbonbsoft.mreveil</ApplicationId>
+		<ApplicationId>com.monbsoft.mreveil</ApplicationId>
 		<ApplicationIdGuid>936276A6-4466-410B-808A-18A8A2F11987</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -58,7 +58,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Controls\AnalogClock.xaml">
+	  <MauiXaml Update="Controls\CircularClock2.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\CircularClock.xaml">
@@ -67,13 +67,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="5.0.0" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="5.1.0" />
 	  <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="1.0.2" />
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="Resources\Embedded\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Controls\CircularClock2.xaml.cs">
+	    <DependentUpon>CircularClock2.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Controls\CircularClock.xaml.cs">
+	    <DependentUpon>CircularClock.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

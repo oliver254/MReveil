@@ -1,4 +1,3 @@
-using CommunityToolkit.Maui.Views;
 using MReveil.Drawables;
 using MReveil.Models;
 
@@ -7,18 +6,27 @@ namespace MReveil.Controls;
 public partial class CircularClock : ContentView
 {
     public static readonly BindableProperty DurationProperty = BindableProperty.Create(nameof(Duration), typeof(TimeSpan?), typeof(CircularClock), null, propertyChanged: OnDurationChanged);
+    public static readonly BindableProperty ElapsedTimeProperty = BindableProperty.Create(nameof(ElapsedTime), typeof(TimeSpan?), typeof(CircularClock), null);
+    public static readonly BindableProperty EndDateProperty = BindableProperty.Create(nameof(EndDate), typeof(DateTime?), typeof(CircularClock), null);
+    public static readonly BindableProperty StatusProperty = BindableProperty.Create(nameof(Status), typeof(SprintStatus), typeof(CircularClock), SprintStatus.Clock);
     private readonly CircularDrawable _circularDrawable;
-    private DateTime? _endTime;
-    private ClockState _state;
+    private IDispatcherTimer _timer;
 
     public CircularClock()
     {
         InitializeComponent();
-        _state = ClockState.Clock;
         _circularDrawable = new CircularDrawable();
-        clockView.Drawable = _circularDrawable;
-        mediaElement.Source = MediaSource.FromResource("bird.mp3");
+        ClockView.Drawable = _circularDrawable;
+
+        _timer = Dispatcher.CreateTimer();
+        _timer.Interval = TimeSpan.FromMicroseconds(500);
+        _timer.Tick += OnTimerTick;
+        _timer.Start();
     }
+
+    ~CircularClock() => _timer.Tick -= OnTimerTick;
+
+    public event EventHandler Alarm;
 
     public TimeSpan? Duration
     {
@@ -26,96 +34,91 @@ public partial class CircularClock : ContentView
         set { SetValue(DurationProperty, value); }
     }
 
-    public void DrawArcs()
+    public TimeSpan ElapsedTime
     {
-        switch (_state)
+        get { return (TimeSpan)GetValue(ElapsedTimeProperty); }
+        set { SetValue(ElapsedTimeProperty, value); }
+    }
+
+    public DateTime? EndDate
+    {
+        get { return (DateTime?)GetValue(EndDateProperty); }
+        set { SetValue(EndDateProperty, value); }
+    }
+
+    public SprintStatus Status
+    {
+        get { return (SprintStatus)GetValue(StatusProperty); }
+        set { SetValue(StatusProperty, value); }
+    }
+
+    private void OnTimerTick(object sender, EventArgs e)
+    {
+        switch (Status)
         {
-            case ClockState.Alarm:
+            case SprintStatus.Alarm:
                 {
-                    mediaElement.Play();
                     break;
                 }
-            case ClockState.Timer:
+            case SprintStatus.Choose:
                 {
-                    TimeSpan elapsedTime = _endTime.Value - DateTime.Now;
-                    if (elapsedTime.TotalSeconds < 0)
+                    ElapsedTime = Duration.Value;
+                    break;
+                }
+            case SprintStatus.Clock:
+                {
+                    ElapsedTime = DateTime.Now.TimeOfDay;
+                    break;
+                }
+            case SprintStatus.Playing:
+                {
+                    ElapsedTime = EndDate.Value - DateTime.Now;
+                    if (ElapsedTime < TimeSpan.Zero)
                     {
-                        _state = ClockState.Alarm;
-                        return;
+                        ElapsedTime = TimeSpan.Zero;
+                        ActivateAlarm();
                     }
-                    timeLabel.Text = elapsedTime.ToString(@"hh\:mm\:ss");
-                    _circularDrawable.Minute = elapsedTime.Minutes;
-                    _circularDrawable.Second = elapsedTime.Seconds;
-                    clockView.Invalidate();
-                    break;
-                }
-            case ClockState.Duration:
-                {
-                    if (Duration.HasValue)
-                    {
-                        timeLabel.Text = Duration.Value.ToString(@"hh\:mm\:ss");
-                        _circularDrawable.Minute = Duration.Value.Minutes;
-                        _circularDrawable.Second = Duration.Value.Seconds;
-                        clockView.Invalidate();
-                    }
-                    break;
-                }
-            default:
-                {
-                    DateTime now = DateTime.Now;
-                    timeLabel.Text = now.ToString(@"HH\:mm\:ss");
-                    _circularDrawable.Minute = now.Minute;
-                    _circularDrawable.Second = now.Second;
-                    clockView.Invalidate();
                     break;
                 }
         }
+        _circularDrawable.Minute = ElapsedTime.Minutes;
+        _circularDrawable.Second = ElapsedTime.Seconds;
+        TimeLabel.Text = ElapsedTime.ToString(@"hh\:mm\:ss");
+        ClockView.Invalidate();
+    }
+
+    public void Pause()
+    {
+        if (EndDate == null || EndDate < DateTime.Now)
+            return;
+        Duration = EndDate.Value - DateTime.Now;
+        Status = SprintStatus.Paused;
+    }
+
+    public void Run()
+    {
+        if (Duration is null)
+            return;
+        EndDate = DateTime.Now.Add(Duration.Value);
+        Status = SprintStatus.Playing;
     }
 
     private static void OnDurationChanged(BindableObject d, object oldValue, object value)
     {
-        var clockView = (CircularClock)d;
-        if (value != null)
+        CircularClock clock = d as CircularClock;
+
+        if (clock is not null && value is not null)
         {
-            clockView._state = ClockState.Duration;
-            clockView.startButton.IsEnabled = true;
+            clock.Status = SprintStatus.Choose;
         }
         else
         {
-            clockView.startButton.IsEnabled = false;
+            clock.Status = SprintStatus.Clock;
         }
-    }    
-    private void ContentView_Unloaded(object sender, EventArgs e)
-    {
-        // Stop and cleanup MediaElement when we navigate away
-        mediaElement.Handler?.DisconnectHandler();
     }
-
-    private void Reset_Clicked(object sender, EventArgs e)
+    private void ActivateAlarm()
     {
-        _state = ClockState.Clock;
-        _endTime = null;
-        Duration = null;
-        startButton.IsVisible = true;
-        startButton.IsEnabled = false;
-        stopButton.IsVisible = false;
-    }
-
-    private void Start_Clicked(object sender, EventArgs e)
-    {
-        _state = ClockState.Timer;
-        _endTime = DateTime.Now.Add(Duration.Value);
-        startButton.IsVisible = false;
-        stopButton.IsVisible = true;
-        mediaElement.Stop();
-    }
-
-    private void Stop_Clicked(object sender, EventArgs e)
-    {
-        Duration = _endTime.Value - DateTime.Now;
-        _state = ClockState.Duration;
-        startButton.IsVisible = true;
-        stopButton.IsVisible = false;
-        mediaElement.Stop();
+        Alarm?.Invoke(this, EventArgs.Empty);
+        Status = SprintStatus.Alarm;
     }
 }

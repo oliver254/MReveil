@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace MReveil.Models;
 
-public enum ClockState
+public enum SprintStatus
 {
     Alarm,
+    Choose,
     Clock,
-    Duration,
-    Timer
+    Playing,
+    Paused
 }

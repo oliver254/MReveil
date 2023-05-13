@@ -16,7 +16,7 @@ namespace MReveil.ViewModels
             {
                 case ActivityType.Pomodoro:
                     {
-                        Duration = TimeSpan.FromMinutes(45);
+                        Duration = TimeSpan.FromSeconds(30);
                         break;
                     }
                 case ActivityType.LongBreak:

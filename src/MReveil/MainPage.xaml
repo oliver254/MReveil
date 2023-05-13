@@ -26,12 +26,23 @@
                         CommandParameter="{x:Static models:ActivityType.LongBreak}"
                         Text="Long break" />
             </HorizontalStackLayout>
-            <controls:CircularClock x:Name="clock"
-                                    Duration="{Binding Duration, Mode=TwoWay}"
-                                    Grid.Row="1"/>
-
-            <!--<controls:AnalogClock Grid.Row="1" />-->
-
+            <controls:CircularClock x:Name="CircularClock" 
+                                    Alarm="CircularClock_Alarm"
+                                    Duration="{Binding Duration}" 
+                                    Grid.Row="1" />
+            <HorizontalStackLayout Grid.Row="2"
+                                   HorizontalOptions="Center"
+                                   Padding="10"
+                                   Spacing="10">
+                <Button x:Name="PlayButton"                         
+                        Clicked="PlayButton_Clicked"                        
+                        Text="Play" />
+            </HorizontalStackLayout>
         </Grid>
+        <toolkit:MediaElement x:Name="MediaElement"
+                              IsVisible="False"
+                              ShouldAutoPlay="False"
+                              ShouldShowPlaybackControls="False"
+                              Source="embed://bird.mp3"/>
     </VerticalStackLayout>
 </ContentPage>
