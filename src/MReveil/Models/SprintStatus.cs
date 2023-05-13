@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MReveil.Models
+namespace MReveil.Models;
+
+public enum SprintStatus
 {
-    internal class SprintStatus
-    {
-    }
+    Alarm,
+    Choose,
+    Clock,
+    Playing,
+    Paused
 }

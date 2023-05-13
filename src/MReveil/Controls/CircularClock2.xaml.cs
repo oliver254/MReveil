@@ -75,7 +75,7 @@ public partial class CircularClock2 : ContentView
 
     private static void OnDurationChanged(BindableObject d, object oldValue, object value)
     {
-        var clockView = (CircularClock)d;
+        var clockView = (CircularClock2)d;
         var durationValue = (TimeSpan?)value;
 
         if(durationValue != null)

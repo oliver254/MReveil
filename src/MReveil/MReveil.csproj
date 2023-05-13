@@ -61,12 +61,15 @@
 	  <MauiXaml Update="Controls\CircularClock2.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Controls\CircularClock.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="5.0.0" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="5.1.0" />
 	  <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="1.0.2" />
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -76,6 +79,9 @@
 	<ItemGroup>
 	  <Compile Update="Controls\CircularClock2.xaml.cs">
 	    <DependentUpon>CircularClock2.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Controls\CircularClock.xaml.cs">
+	    <DependentUpon>CircularClock.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
