@@ -5,17 +5,17 @@
              x:Class="Monbsoft.MReveil.Views.SettingsPage"
              x:DataType="viewmodels:SettingsViewModel"
              Title="Settings">
-    <VerticalStackLayout   RadioButtonGroup.GroupName="Mode"
-                           RadioButtonGroup.SelectedValue="{Binding Mode}">
+    <VerticalStackLayout RadioButtonGroup.GroupName="Mode"
+                         RadioButtonGroup.SelectedValue="{Binding Mode}" Padding="8,0">
         <Label Style="{StaticResource TitleLabelStyle}"
                Text="Choose a mode"               
                VerticalOptions="Center"/>
-        <RadioButton Content="Light" Value="Light"/>
-        <RadioButton Content="Dark" Value="Dark"/>
-        <RadioButton Content="Windows default" Value="Default"/>
+        <RadioButton Content="Light" Padding="5,0" Value="Light"/>
+        <RadioButton Content="Dark" Padding="5,0" Value="Dark"/>
+        <RadioButton Content="Windows default" Padding="5,0" Value="Default"/>
         <Label Style="{StaticResource TitleLabelStyle}"
                Text="Set a time (minutes)"/>
-        <Grid>
+        <Grid Padding="5,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
@@ -26,7 +26,7 @@
                 <Stepper HorizontalOptions="Center"
                          Increment="1"
                          Maximum="59"
-                         Minimum="1"                         
+                         Minimum="1"                            
                          Value="{Binding SprintDuration}"/>
             </VerticalStackLayout>
             <VerticalStackLayout Grid.Column="1">
@@ -46,6 +46,12 @@
                          Value="{Binding LongBreakDuration}"/>
             </VerticalStackLayout>
         </Grid>
-        
+        <Label Style="{StaticResource TitleLabelStyle}"
+               Text="Customize the time"/>
+        <TimePicker Time="{Binding CustomizedTime}"  />
+        <Label Style="{StaticResource TitleLabelStyle}"
+               Text="Options"/>
+        <Button Command="{Binding ClearCommand}" HorizontalOptions="Start" Margin="5,0" Text="Clear" WidthRequest="100"/>
+
     </VerticalStackLayout>
 </ContentPage>

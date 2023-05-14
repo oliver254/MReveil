@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Monbsoft.MReveil.Services;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Monbsoft.MReveil.ViewModels
     {
         private readonly ThemeService _themeService;   
         private readonly SettingsService _settingsService;
+        private TimeSpan? _customizedTime;
         private int _longDuration;
         private string _mode;        
         private int _shortDuration;
@@ -20,15 +22,20 @@ namespace Monbsoft.MReveil.ViewModels
 
         public SettingsViewModel(ThemeService themeService, SettingsService settingsService)
         {
-            _mode = themeService.Mode;
-            _sprintDuration = settingsService.Sprint;
-            _shortDuration = settingsService.ShortBreak;
-            _longDuration = settingsService.LongBreak;
-
             _themeService = themeService;
-            _settingsService = settingsService; 
+            _settingsService = settingsService;
+
+            Initialize();
         }
 
+        public TimeSpan? CustomizedTime
+        {
+            get => _customizedTime;
+            set
+            {
+                SetProperty(ref _customizedTime, value);
+            }
+        }
         public int LongBreakDuration
         {
             get => _longDuration;
@@ -64,6 +71,20 @@ namespace Monbsoft.MReveil.ViewModels
                 SetProperty(ref _sprintDuration, value);
                 _settingsService.Sprint = value;
             }
+        }
+
+        [RelayCommand]
+        public void Clear()
+        {
+            Preferences.Clear();
+            Initialize();            
+        }
+        private void Initialize()
+        {
+            _mode = _themeService.Mode;
+            _sprintDuration = _settingsService.Sprint;
+            _shortDuration = _settingsService.ShortBreak;
+            _longDuration = _settingsService.LongBreak;
         }
     }
 }
