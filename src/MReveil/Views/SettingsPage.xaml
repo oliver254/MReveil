@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Monbsoft.MReveil.ViewModels"
+             x:Class="Monbsoft.MReveil.Views.SettingsPage"
+             x:DataType="viewmodels:SettingsViewModel"
+             Title="Settings">
+    <VerticalStackLayout RadioButtonGroup.GroupName="Mode"
+                         RadioButtonGroup.SelectedValue="{Binding Mode}" Padding="8,0">
+        <Label Style="{StaticResource TitleLabelStyle}"
+               Text="Choose a mode"               
+               VerticalOptions="Center"/>
+        <RadioButton Content="Light" Padding="5,0" Value="Light"/>
+        <RadioButton Content="Dark" Padding="5,0" Value="Dark"/>
+        <RadioButton Content="Windows default" Padding="5,0" Value="Default"/>
+        <Label Style="{StaticResource TitleLabelStyle}"
+               Text="Set a time (minutes)"/>
+        <Grid Padding="5,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <VerticalStackLayout>
+                <Label Text="{Binding SprintDuration, StringFormat='Sprint: {0:G}'}"/>
+                <Stepper HorizontalOptions="Center"
+                         Increment="1"
+                         Maximum="59"
+                         Minimum="1"                            
+                         Value="{Binding SprintDuration}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Column="1">
+                <Label Text="{Binding ShortBreakDuration, StringFormat='Short: {0:G}'}"/>
+                <Stepper HorizontalOptions="Center"
+                         Increment="1"
+                         Maximum="59"
+                         Minimum="1"
+                         Value="{Binding ShortBreakDuration}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Column="2">
+                <Label Text="{Binding LongBreakDuration, StringFormat='Long: {0:G}'}"/>
+                <Stepper HorizontalOptions="Center"
+                         Increment="1"
+                         Maximum="59"
+                         Minimum="1"
+                         Value="{Binding LongBreakDuration}"/>
+            </VerticalStackLayout>
+        </Grid>
+        <Label Style="{StaticResource TitleLabelStyle}"
+               Text="Customize the time"/>
+        <TimePicker Time="{Binding CustomizedTime}"  />
+        <Label Style="{StaticResource TitleLabelStyle}"
+               Text="Options"/>
+        <Button Command="{Binding ClearCommand}" HorizontalOptions="Start" Margin="5,0" Text="Clear" WidthRequest="100"/>
+
+    </VerticalStackLayout>
+</ContentPage>

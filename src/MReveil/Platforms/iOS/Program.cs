@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace MReveil
+namespace Monbsoft.MReveil
 {
     public class Program
     {

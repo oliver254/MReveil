@@ -1,12 +1,14 @@
-﻿namespace MReveil
-{
-    public partial class App : Application
-    {
-        public App()
-        {
-            InitializeComponent();
+﻿using Monbsoft.MReveil.Services;
 
-            MainPage = new AppShell();
-        }
+namespace Monbsoft.MReveil;
+
+public partial class App : Application
+{
+    public App(ThemeService themeService)
+    {
+        themeService.Initialize();
+        InitializeComponent();
+
+        MainPage = new AppShell();
     }
 }

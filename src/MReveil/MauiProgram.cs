@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Maui;
-using MReveil.ViewModels;
+using Monbsoft.MReveil.Services;
+using Monbsoft.MReveil.ViewModels;
+using Monbsoft.MReveil.Views;
 
-namespace MReveil
+namespace Monbsoft.MReveil
 {
     public static class MauiProgram
     {
@@ -20,9 +22,15 @@ namespace MReveil
 
             // pages
             builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<SettingsPage>();
 
             // view models
             builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddSingleton<SettingsViewModel>();
+
+            // services
+            builder.Services.AddSingleton<ThemeService>();
+            builder.Services.AddSingleton<SettingsService>();
 
             return builder.Build();
         }

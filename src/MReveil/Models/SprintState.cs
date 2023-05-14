@@ -1,4 +1,4 @@
-﻿namespace MReveil.Models;
+﻿namespace Monbsoft.MReveil.Models;
 
 public enum SprintState
 {

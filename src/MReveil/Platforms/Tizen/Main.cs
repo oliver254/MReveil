@@ -2,7 +2,7 @@ using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 using System;
 
-namespace MReveil
+namespace Monbsoft.MReveil
 {
     internal class Program : MauiApplication
     {

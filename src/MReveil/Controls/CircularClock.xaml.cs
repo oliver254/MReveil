@@ -1,7 +1,7 @@
-using MReveil.Drawables;
-using MReveil.Models;
+using Monbsoft.MReveil.Drawables;
+using Monbsoft.MReveil.Models;
 
-namespace MReveil.Controls;
+namespace Monbsoft.MReveil.Controls;
 
 public partial class CircularClock : ContentView
 {
