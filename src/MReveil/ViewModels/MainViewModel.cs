@@ -23,7 +23,7 @@ namespace Monbsoft.MReveil.ViewModels
             {
                 case ActivityType.Pomodoro:
                     {
-                        Duration = TimeSpan.FromSeconds(30);
+                        Duration = TimeSpan.FromMinutes(_settingsService.Sprint);
                         break;
                     }
                 case ActivityType.LongBreak:
