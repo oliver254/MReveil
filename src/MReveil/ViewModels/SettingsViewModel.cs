@@ -1,12 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Monbsoft.MReveil.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Monbsoft.MReveil.ViewModels
 {
@@ -81,10 +75,10 @@ namespace Monbsoft.MReveil.ViewModels
         }
         private void Initialize()
         {
-            _mode = _themeService.Mode;
-            _sprintDuration = _settingsService.Sprint;
-            _shortDuration = _settingsService.ShortBreak;
-            _longDuration = _settingsService.LongBreak;
+            Mode = _themeService.Mode;
+            SprintDuration = _settingsService.Sprint;
+            ShortBreakDuration = _settingsService.ShortBreak;
+            LongBreakDuration = _settingsService.LongBreak;
         }
     }
 }

@@ -10,7 +10,7 @@ public class ThemeService
 {
     public string Mode
     {
-        get => Preferences.Get(nameof(Mode), string.Empty);
+        get => Preferences.Get(nameof(Mode), "Default");
         set => Preferences.Set(nameof(Mode), value);
     }
 
