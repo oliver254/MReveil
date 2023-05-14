@@ -1,9 +1,12 @@
-﻿namespace MReveil
+﻿using MReveil.Services;
+
+namespace MReveil
 {
     public partial class App : Application
     {
-        public App()
+        public App(ThemeService themeService)
         {
+            themeService.Initialize();
             InitializeComponent();
 
             MainPage = new AppShell();

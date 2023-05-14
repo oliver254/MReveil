@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:MReveil.ViewModels"
+             x:Class="MReveil.Views.SettingsPage"
+             x:DataType="viewmodels:SettingsViewModel"
+             Title="Settings">
+    <VerticalStackLayout   RadioButtonGroup.GroupName="Mode"
+                           RadioButtonGroup.SelectedValue="{Binding Mode}">
+        <Label Style="{StaticResource TitleLabelStyle}"
+               Text="Choose a mode"               
+               VerticalOptions="Center"/>
+        <RadioButton Content="Light" Value="Light"/>
+        <RadioButton Content="Dark" Value="Dark"/>
+        <RadioButton Content="Windows default" Value="Default"/>
+        <Label Style="{StaticResource TitleLabelStyle}"
+               Text="Set a time"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <VerticalStackLayout>
+                <Label Text="{Binding SprintDuration, StringFormat='Sprint: {0:G}'}"/>
+                <Stepper HorizontalOptions="Center"
+                         Increment="1"
+                         Maximum="59"
+                         Minimum="1"                         
+                         Value="{Binding SprintDuration}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Column="1">
+                <Label Text="{Binding ShortBreakDuration, StringFormat='Short: {0:G}'}"/>
+                <Stepper HorizontalOptions="Center"
+                         Increment="1"
+                         Maximum="59"
+                         Minimum="1"
+                         Value="{Binding ShortBreakDuration}"/>
+            </VerticalStackLayout>
+        </Grid>
+        
+    </VerticalStackLayout>
+</ContentPage>

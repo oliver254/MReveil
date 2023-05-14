@@ -2,7 +2,7 @@
 using MReveil.Drawables;
 using MReveil.ViewModels;
 
-namespace MReveil
+namespace MReveil.Views
 {
     public partial class MainPage : ContentPage
     {

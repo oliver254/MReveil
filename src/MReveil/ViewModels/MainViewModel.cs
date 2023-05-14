@@ -1,13 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MReveil.Models;
+using MReveil.Services;
 
 namespace MReveil.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
+        private readonly SettingsService _settingsService;
         [ObservableProperty]
-        TimeSpan? _duration;
+        private TimeSpan? _duration;
+
+        public MainViewModel(SettingsService settingsService)
+        {
+            _settingsService = settingsService;
+        }
 
         [RelayCommand]
         public void SetDuration(ActivityType activityType)
@@ -21,12 +28,12 @@ namespace MReveil.ViewModels
                     }
                 case ActivityType.LongBreak:
                     {
-                        Duration = TimeSpan.FromMinutes(15);
+                        Duration = TimeSpan.FromMinutes(_settingsService.LongBreak);
                         break;                            
                     }
                 case ActivityType.ShortBreak:
                     {
-                        Duration = TimeSpan.FromMinutes(5);
+                        Duration = TimeSpan.FromMinutes(_settingsService.ShortBreak);
                         break;
                     }
                 default:
