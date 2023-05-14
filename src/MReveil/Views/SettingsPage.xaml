@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodels="clr-namespace:MReveil.ViewModels"
-             x:Class="MReveil.Views.SettingsPage"
+             xmlns:viewmodels="clr-namespace:Monbsoft.MReveil.ViewModels"
+             x:Class="Monbsoft.MReveil.Views.SettingsPage"
              x:DataType="viewmodels:SettingsViewModel"
              Title="Settings">
     <VerticalStackLayout   RadioButtonGroup.GroupName="Mode"
@@ -14,9 +14,10 @@
         <RadioButton Content="Dark" Value="Dark"/>
         <RadioButton Content="Windows default" Value="Default"/>
         <Label Style="{StaticResource TitleLabelStyle}"
-               Text="Set a time"/>
+               Text="Set a time (minutes)"/>
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
@@ -35,6 +36,14 @@
                          Maximum="59"
                          Minimum="1"
                          Value="{Binding ShortBreakDuration}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Column="2">
+                <Label Text="{Binding LongBreakDuration, StringFormat='Long: {0:G}'}"/>
+                <Stepper HorizontalOptions="Center"
+                         Increment="1"
+                         Maximum="59"
+                         Minimum="1"
+                         Value="{Binding LongBreakDuration}"/>
             </VerticalStackLayout>
         </Grid>
         

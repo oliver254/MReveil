@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.DependencyInjection;
-using MReveil.Services;
-using MReveil.ViewModels;
-using MReveil.Views;
+using Monbsoft.MReveil.Services;
+using Monbsoft.MReveil.ViewModels;
+using Monbsoft.MReveil.Views;
 
-namespace MReveil
+namespace Monbsoft.MReveil
 {
     public static class MauiProgram
     {

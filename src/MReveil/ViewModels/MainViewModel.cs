@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MReveil.Models;
-using MReveil.Services;
+using Monbsoft.MReveil.Models;
+using Monbsoft.MReveil.Services;
 
-namespace MReveil.ViewModels
+namespace Monbsoft.MReveil.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {

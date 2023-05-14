@@ -1,10 +1,9 @@
-﻿namespace MReveil
+﻿namespace Monbsoft.MReveil;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

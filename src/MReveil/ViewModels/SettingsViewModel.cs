@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using MReveil.Services;
+using Monbsoft.MReveil.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MReveil.ViewModels
+namespace Monbsoft.MReveil.ViewModels
 {
     public partial class SettingsViewModel : ObservableObject
     {
@@ -23,6 +23,7 @@ namespace MReveil.ViewModels
             _mode = themeService.Mode;
             _sprintDuration = settingsService.Sprint;
             _shortDuration = settingsService.ShortBreak;
+            _longDuration = settingsService.LongBreak;
 
             _themeService = themeService;
             _settingsService = settingsService; 

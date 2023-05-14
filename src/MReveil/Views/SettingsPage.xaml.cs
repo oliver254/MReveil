@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
-using MReveil.ViewModels;
+using Monbsoft.MReveil.ViewModels;
 
-namespace MReveil.Views;
+namespace Monbsoft.MReveil.Views;
 
 public partial class SettingsPage : ContentPage
 {

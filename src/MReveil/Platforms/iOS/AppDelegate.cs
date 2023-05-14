@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace MReveil
+namespace Monbsoft.MReveil
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

@@ -1,25 +1,23 @@
 ﻿using CommunityToolkit.Maui.Views;
-using MReveil.Drawables;
-using MReveil.ViewModels;
+using Monbsoft.MReveil.ViewModels;
 
-namespace MReveil.Views
+namespace Monbsoft.MReveil.Views;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+
+    public MainPage(MainViewModel viewModel)
     {
+        InitializeComponent();
+        BindingContext = viewModel;
+    }
 
-        public MainPage(MainViewModel viewModel)
-        {
-            InitializeComponent();
-            BindingContext = viewModel;
-        }
-
-        private void PlayButton_Clicked(object sender, EventArgs e)
-        {
-            CircularClock.Run();
-        }
-        private void CircularClock_Alarm(object sender, EventArgs e)
-        {
-            MediaElement.Play();
-        }
+    private void PlayButton_Clicked(object sender, EventArgs e)
+    {
+        CircularClock.Run();
+    }
+    private void CircularClock_Alarm(object sender, EventArgs e)
+    {
+        MediaElement.Play();
     }
 }

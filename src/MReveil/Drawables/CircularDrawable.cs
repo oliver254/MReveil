@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace MReveil.Drawables;
+namespace Monbsoft.MReveil.Drawables;
 
 internal class CircularDrawable : IDrawable
 {

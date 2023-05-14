@@ -1,4 +1,4 @@
-﻿namespace MReveil.Services;
+﻿namespace Monbsoft.MReveil.Services;
 
 public class SettingsService
 {

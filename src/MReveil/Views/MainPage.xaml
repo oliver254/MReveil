@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:MReveil.Controls"
-             xmlns:models="clr-namespace:MReveil.Models"
+             xmlns:controls="clr-namespace:Monbsoft.MReveil.Controls"
+             xmlns:models="clr-namespace:Monbsoft.MReveil.Models"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:viewmodels="clr-namespace:MReveil.ViewModels"
-             x:Class="MReveil.Views.MainPage"
+             xmlns:viewmodels="clr-namespace:Monbsoft.MReveil.ViewModels"
+             x:Class="Monbsoft.MReveil.Views.MainPage"
              x:DataType="viewmodels:MainViewModel">
 
     <Grid VerticalOptions="FillAndExpand">

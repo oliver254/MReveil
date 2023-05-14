@@ -4,15 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MReveil.Services;
+namespace Monbsoft.MReveil.Services;
 
 public class ThemeService
 {
-    public ThemeService()
-    {
-
-    }
-
     public string Mode
     {
         get => Preferences.Get(nameof(Mode), string.Empty);

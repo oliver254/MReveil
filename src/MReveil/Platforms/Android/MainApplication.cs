@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace MReveil
+namespace Monbsoft.MReveil
 {
     [Application]
     public class MainApplication : MauiApplication
