@@ -1,10 +1,10 @@
 #  Multi-platform Reveil
 
-![MReveil capture](/docs/images/mreveil.png)
-
 ## What is MReveil?
 
 **MReveil** is a multi-platform desktop alarm clock and pomodoro clock powered by .NET MAUI. This app is inspired by Pomodoro Technique which is a time management method developed by Francesco Cirillo. 
+
+![MReveil capture](/docs/images/mreveil.png)
 
 ## Credits
 
