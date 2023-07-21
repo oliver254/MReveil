@@ -49,6 +49,7 @@
         <Label Style="{StaticResource TitleLabelStyle}"
                Text="Customize the time"/>
         <TimePicker Time="{Binding CustomizedTime}"  />
+        <Button Command="{Binding SetTimeCommand}" HorizontalOptions="Start" Text="Set alarm" WidthRequest="100"/>
         <Label Style="{StaticResource TitleLabelStyle}"
                Text="Options"/>
         <Button Command="{Binding ClearCommand}" HorizontalOptions="Start" Margin="5,0" Text="Clear" WidthRequest="100"/>

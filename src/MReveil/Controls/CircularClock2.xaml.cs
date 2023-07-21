@@ -36,7 +36,7 @@ public partial class CircularClock2 : ContentView
                     mediaElement.Play();
                     break;
                 }
-            case SprintState.Run:
+            case SprintState.Runing:
                 {                    
                     TimeSpan elapsedTime = _endTime.Value - DateTime.Now;
                     if (elapsedTime.TotalSeconds < 0)
@@ -111,7 +111,7 @@ public partial class CircularClock2 : ContentView
                     Run();
                     break;
                 }
-            case SprintState.Run:
+            case SprintState.Runing:
                 {
                     Stop();
                     break;
@@ -128,7 +128,7 @@ public partial class CircularClock2 : ContentView
         if (_sprint == null)
             return;
         _endTime = DateTime.Now.Add(_sprint.Value);
-        _state = SprintState.Run;
+        _state = SprintState.Runing;
         VisualStateManager.GoToState(mainLayout, "Stop");
 
     }

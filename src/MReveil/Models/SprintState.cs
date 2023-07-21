@@ -2,7 +2,7 @@
 
 public enum SprintState
 {
-    Run,
+    Runing,
     Stop,
     Completed,
     Start,
