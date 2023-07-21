@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Monbsoft.MReveil.Messaging;
 using Monbsoft.MReveil.Services;
 
 namespace Monbsoft.MReveil.ViewModels
@@ -18,7 +20,7 @@ namespace Monbsoft.MReveil.ViewModels
         {
             _themeService = themeService;
             _settingsService = settingsService;
-
+            _customizedTime = DateTime.Now.TimeOfDay;
             Initialize();
         }
 
@@ -79,6 +81,18 @@ namespace Monbsoft.MReveil.ViewModels
             SprintDuration = _settingsService.Sprint;
             ShortBreakDuration = _settingsService.ShortBreak;
             LongBreakDuration = _settingsService.LongBreak;
+        }
+        [RelayCommand]
+        public void SetTime()
+        {
+            if (CustomizedTime is null)
+                return;
+
+            var duration = (DateTime.Today + CustomizedTime) - DateTime.Now;
+            if (duration is null || duration.Value.Ticks < 0)
+                return;
+
+            WeakReferenceMessenger.Default.Send(new DurationSetMessage(duration.Value));
         }
     }
 }

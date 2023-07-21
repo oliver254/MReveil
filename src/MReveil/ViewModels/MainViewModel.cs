@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Monbsoft.MReveil.Messaging;
 using Monbsoft.MReveil.Models;
 using Monbsoft.MReveil.Services;
 
@@ -13,8 +15,10 @@ namespace Monbsoft.MReveil.ViewModels
 
         public MainViewModel(SettingsService settingsService)
         {
+            WeakReferenceMessenger.Default.Register<MainViewModel, DurationSetMessage>(this, (r, m) => r.Duration = m.Value);
             _settingsService = settingsService;
-        }
+
+        }       
 
         [RelayCommand]
         public void SetDuration(ActivityType activityType)
