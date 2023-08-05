@@ -14,7 +14,21 @@ public partial class MainPage : ContentPage
 
     private void PlayButton_Clicked(object sender, EventArgs e)
     {
-        CircularClock.Run();
+        switch(CircularClock.Status)
+        {
+            case Models.SprintStatus.Playing:
+                {
+                    CircularClock.Pause();
+                    VisualStateManager.GoToState(GridLayout, "Pause");
+                    break;
+                }
+            default:
+                {
+                    CircularClock.Run();
+                    VisualStateManager.GoToState(GridLayout, "Playing");
+                    break;
+                }
+        }
     }
     private void CircularClock_Alarm(object sender, EventArgs e)
     {

@@ -11,7 +11,7 @@
                        HeightRequest="400"
                        WidthRequest="400" />
         <Label x:Name="TimeLabel"
-               FontSize="Large"
+               FontSize="52"
                HorizontalOptions="Center"
                Text=""
                VerticalOptions="Center" />

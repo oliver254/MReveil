@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Monbsoft.MReveil.Messaging;
 using Monbsoft.MReveil.Services;
+using Monbsoft.MReveil.Views;
 
 namespace Monbsoft.MReveil.ViewModels
 {
@@ -83,7 +84,7 @@ namespace Monbsoft.MReveil.ViewModels
             LongBreakDuration = _settingsService.LongBreak;
         }
         [RelayCommand]
-        public void SetTime()
+        public async void SetTime()
         {
             if (CustomizedTime is null)
                 return;
@@ -93,6 +94,7 @@ namespace Monbsoft.MReveil.ViewModels
                 return;
 
             WeakReferenceMessenger.Default.Send(new DurationSetMessage(duration.Value));
+            await Shell.Current.GoToAsync(new ShellNavigationState($"//{nameof(MainPage)}"));
         }
     }
 }
