@@ -11,6 +11,7 @@ public partial class MainViewModel : ObservableObject
     private readonly SettingsService _settingsService;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(StopCommand))]
     public IState _state;
 
     public MainViewModel(TimerManager timerManager, SettingsService settingsService)
@@ -29,7 +30,7 @@ public partial class MainViewModel : ObservableObject
         _timerManager.Pause();
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanStop))]
     public void Stop()
     {
         _timerManager.Stop();
@@ -61,6 +62,11 @@ public partial class MainViewModel : ObservableObject
                 }
         }
         State = _timerManager.State;
+    }
+
+    private bool CanStop()
+    {
+        return State is CountdownState;
     }
     private void TimerManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {

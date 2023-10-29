@@ -13,8 +13,13 @@ public class CountdownState : IState
 
     public bool Alarm { get; private set; }
     public DateTime End { get; }
+    public bool IsPause { get; private set; }
     public TimeSpan Time { get; private set; }
 
+    public void Pause()
+    {
+        IsPause = true;
+    }
     public void Refresh()
     {
         if(Alarm)

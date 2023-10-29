@@ -86,7 +86,7 @@ public partial class SettingsViewModel : ObservableObject
         LongBreakDuration = _settingsService.LongBreak;
     }
     [RelayCommand]
-    public async void SetTime()
+    public async Task SetTime()
     {
         if (CustomizedTime is null)
             return;
@@ -95,7 +95,7 @@ public partial class SettingsViewModel : ObservableObject
         if (duration is null || duration.Value.Ticks < 0)
             return;
 
-        WeakReferenceMessenger.Default.Send(new StateUpdateMessage(duration.Value));
+        _timerManager.Play(duration.Value);
         await Shell.Current.GoToAsync(new ShellNavigationState($"//{nameof(MainPage)}"));
     }
 }
