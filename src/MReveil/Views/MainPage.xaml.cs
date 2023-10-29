@@ -1,10 +1,14 @@
 ﻿using CommunityToolkit.Maui.Views;
 using Monbsoft.MReveil.ViewModels;
+using System.Windows.Input;
 
 namespace Monbsoft.MReveil.Views;
 
 public partial class MainPage : ContentPage
 {
+    public static readonly BindableProperty PauseProperty = BindableProperty.Create(nameof(PauseCommand), typeof(ICommand), typeof(MainPage), null);
+    public static readonly BindableProperty PlayProperty = BindableProperty.Create(nameof(PlayCommand), typeof(ICommand), typeof(MainPage), null);
+    
 
     public MainPage(MainViewModel viewModel)
     {
@@ -12,26 +16,7 @@ public partial class MainPage : ContentPage
         BindingContext = viewModel;
     }
 
-    private void PlayButton_Clicked(object sender, EventArgs e)
-    {
-        switch(CircularClock.Status)
-        {
-            case Models.SprintStatus.Playing:
-                {
-                    CircularClock.Pause();
-                    VisualStateManager.GoToState(GridLayout, "Pause");
-                    break;
-                }
-            default:
-                {
-                    CircularClock.Run();
-                    VisualStateManager.GoToState(GridLayout, "Playing");
-                    break;
-                }
-        }
-    }
-    private void CircularClock_Alarm(object sender, EventArgs e)
-    {
-        MediaElement.Play();
-    }
+    public ICommand PlayCommand { get; set; } 
+    public ICommand PauseCommand { get; set; }
+
 }

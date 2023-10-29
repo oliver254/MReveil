@@ -1,52 +1,76 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using Monbsoft.MReveil.Messaging;
 using Monbsoft.MReveil.Models;
 using Monbsoft.MReveil.Services;
 
-namespace Monbsoft.MReveil.ViewModels
+namespace Monbsoft.MReveil.ViewModels;
+
+public partial class MainViewModel : ObservableObject
 {
-    public partial class MainViewModel : ObservableObject
+    private readonly TimerManager _timerManager;
+    private readonly SettingsService _settingsService;
+
+    [ObservableProperty]
+    public IState _state;
+
+    public MainViewModel(TimerManager timerManager, SettingsService settingsService)
     {
-        private readonly SettingsService _settingsService;
-        [ObservableProperty]
-        private TimeSpan? _duration;
+        //WeakReferenceMessenger.Default.Register<MainViewModel, DurationSetMessage>(this, (r, m) => r.Duration = m.Value);
+        _timerManager = timerManager;
+        _settingsService = settingsService;
+        _state = _timerManager.State;
+        _timerManager.PropertyChanged += TimerManager_PropertyChanged;
+    }
 
-        public MainViewModel(SettingsService settingsService)
+
+    [RelayCommand]
+    public void Pause()
+    {
+        _timerManager.Pause();
+    }
+
+    [RelayCommand]
+    public void Stop()
+    {
+        _timerManager.Stop();
+    }
+
+    [RelayCommand]
+    public void SetDuration(ActivityType activityType)
+    {
+        switch (activityType)
         {
-            WeakReferenceMessenger.Default.Register<MainViewModel, DurationSetMessage>(this, (r, m) => r.Duration = m.Value);
-            _settingsService = settingsService;
-
-        }       
-
-        [RelayCommand]
-        public void SetDuration(ActivityType activityType)
+            case ActivityType.Pomodoro:
+                {
+                    _timerManager.Play(TimeSpan.FromMinutes(_settingsService.Sprint));
+                    break;
+                }
+            case ActivityType.LongBreak:
+                {
+                    _timerManager.Play(TimeSpan.FromMinutes(_settingsService.LongBreak));
+                    break;
+                }
+            case ActivityType.ShortBreak:
+                {
+                    _timerManager.Play(TimeSpan.FromMinutes(_settingsService.ShortBreak));
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
+        State = _timerManager.State;
+    }
+    private void TimerManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        TimerManager timerManager = sender as TimerManager;
+        if (timerManager is not null)
         {
-            switch(activityType)
+            if (e.PropertyName == nameof(State))
             {
-                case ActivityType.Pomodoro:
-                    {
-                        Duration = TimeSpan.FromMinutes(_settingsService.Sprint);
-                        break;
-                    }
-                case ActivityType.LongBreak:
-                    {
-                        Duration = TimeSpan.FromMinutes(_settingsService.LongBreak);
-                        break;                            
-                    }
-                case ActivityType.ShortBreak:
-                    {
-                        Duration = TimeSpan.FromMinutes(_settingsService.ShortBreak);
-                        break;
-                    }
-                default:
-                    {
-                        Duration = null;
-                        break;
-                    }
+                State = timerManager.State;
             }
         }
-
     }
 }

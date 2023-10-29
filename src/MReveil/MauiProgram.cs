@@ -30,6 +30,7 @@ namespace Monbsoft.MReveil
 
             // services
             builder.Services.AddSingleton<ThemeService>();
+            builder.Services.AddSingleton<TimerManager>();
             builder.Services.AddSingleton<SettingsService>();
 
             return builder.Build();
