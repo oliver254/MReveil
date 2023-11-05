@@ -11,6 +11,9 @@ public partial class MainViewModel : ObservableObject
     private readonly SettingsService _settingsService;
 
     [ObservableProperty]
+    public bool _alarm;
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(StopCommand))]
     public IState _state;
 
@@ -23,6 +26,11 @@ public partial class MainViewModel : ObservableObject
         _timerManager.PropertyChanged += TimerManager_PropertyChanged;
     }
 
+    [RelayCommand]
+    public void ActivateAlarm()
+    {
+
+    }
 
     [RelayCommand]
     public void Pause()
@@ -73,6 +81,14 @@ public partial class MainViewModel : ObservableObject
         TimerManager timerManager = sender as TimerManager;
         if (timerManager is not null)
         {
+            switch(e.PropertyName)
+            {
+                case nameof(State):
+                    {
+                        State = timerManager.State;
+                        break;
+                    }
+            }
             if (e.PropertyName == nameof(State))
             {
                 State = timerManager.State;

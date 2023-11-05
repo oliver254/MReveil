@@ -58,7 +58,7 @@
                     Text="Play">
             </Button>
         </HorizontalStackLayout>
-        <toolkit:MediaElement x:Name="MediaElement"                              
+        <toolkit:MediaElement x:Name="MediaElement"                                                            
                               IsVisible="False"
                               ShouldAutoPlay="False"
                               ShouldShowPlaybackControls="False"

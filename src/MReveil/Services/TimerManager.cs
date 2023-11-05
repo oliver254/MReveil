@@ -9,7 +9,7 @@ public partial class TimerManager : ObservableObject
     private IState _state;
     public TimerManager()
     {
-        State = new ClockState();
+        State = new ClockState();        
     }
 
     public void Pause()
@@ -18,7 +18,6 @@ public partial class TimerManager : ObservableObject
         {
             case CountdownState countdownState:
                 {
-                    countdownState.Pause();
                     var duration = countdownState.End - DateTime.Now;
                     break;
                 }

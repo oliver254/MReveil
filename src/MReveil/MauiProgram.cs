@@ -21,7 +21,7 @@ namespace Monbsoft.MReveil
                 });
 
             // pages
-            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<SettingsPage>();
 
             // view models
