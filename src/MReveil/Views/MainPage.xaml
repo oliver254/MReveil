@@ -61,6 +61,7 @@
         <toolkit:MediaElement x:Name="MediaElement"                                                            
                               IsVisible="False"
                               ShouldAutoPlay="False"
+                              ShouldLoopPlayback="{Binding Settings.LoopPlayback}"
                               ShouldShowPlaybackControls="False"
                               Source="embed://bird.mp3" />
     </Grid>

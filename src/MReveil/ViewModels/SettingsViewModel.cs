@@ -14,6 +14,7 @@ public partial class SettingsViewModel : ObservableObject
     private readonly SettingsService _settingsService;
     private TimeSpan? _customizedTime;
     private int _longDuration;
+    private bool _loopPlayback;
     private string _mode;        
     private int _shortDuration;
     private int _sprintDuration;        
@@ -42,6 +43,15 @@ public partial class SettingsViewModel : ObservableObject
         {
             SetProperty(ref _longDuration, value);
             _settingsService.LongBreak = value;
+        }
+    }
+    public bool LoopPlayback
+    {
+        get => _loopPlayback;
+        set
+        {
+            SetProperty(ref _loopPlayback, value);
+            _settingsService.LoopPlayback = value;
         }
     }
     public string Mode
@@ -84,6 +94,7 @@ public partial class SettingsViewModel : ObservableObject
         SprintDuration = _settingsService.Sprint;
         ShortBreakDuration = _settingsService.ShortBreak;
         LongBreakDuration = _settingsService.LongBreak;
+        LoopPlayback = _settingsService.LoopPlayback;
     }
     [RelayCommand]
     public async Task SetTime()

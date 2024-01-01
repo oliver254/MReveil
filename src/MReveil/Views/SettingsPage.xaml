@@ -7,52 +7,86 @@
              Title="Settings">
     <VerticalStackLayout RadioButtonGroup.GroupName="Mode"
                          RadioButtonGroup.SelectedValue="{Binding Mode}" Padding="8,0">
-        <Label Style="{StaticResource TitleLabelStyle}"
-               Text="Choose a mode"               
-               VerticalOptions="Center"/>
-        <RadioButton Content="Light" Padding="5,0" Value="Light"/>
-        <RadioButton Content="Dark" Padding="5,0" Value="Dark"/>
-        <RadioButton Content="Windows default" Padding="5,0" Value="Default"/>
-        <Label Style="{StaticResource TitleLabelStyle}"
-               Text="Set a time (minutes)"/>
-        <Grid Padding="5,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
-            <VerticalStackLayout>
-                <Label Text="{Binding SprintDuration, StringFormat='Sprint: {0:G}'}"/>
-                <Stepper HorizontalOptions="Center"
-                         Increment="1"
-                         Maximum="59"
-                         Minimum="1"                            
-                         Value="{Binding SprintDuration}"/>
-            </VerticalStackLayout>
-            <VerticalStackLayout Grid.Column="1">
-                <Label Text="{Binding ShortBreakDuration, StringFormat='Short: {0:G}'}"/>
-                <Stepper HorizontalOptions="Center"
-                         Increment="1"
-                         Maximum="59"
-                         Minimum="1"
-                         Value="{Binding ShortBreakDuration}"/>
-            </VerticalStackLayout>
-            <VerticalStackLayout Grid.Column="2">
-                <Label Text="{Binding LongBreakDuration, StringFormat='Long: {0:G}'}"/>
-                <Stepper HorizontalOptions="Center"
-                         Increment="1"
-                         Maximum="59"
-                         Minimum="1"
-                         Value="{Binding LongBreakDuration}"/>
-            </VerticalStackLayout>
-        </Grid>
-        <Label Style="{StaticResource TitleLabelStyle}"
-               Text="Customize the time"/>
-        <TimePicker Time="{Binding CustomizedTime}"  />
-        <Button Command="{Binding SetTimeCommand}" HorizontalOptions="Start" Text="Set alarm" WidthRequest="100"/>
-        <Label Style="{StaticResource TitleLabelStyle}"
-               Text="Options"/>
-        <Button Command="{Binding ClearCommand}" HorizontalOptions="Start" Margin="5,0" Text="Clear" WidthRequest="100"/>
 
+        <Border Margin="0, 10">
+            <Grid ColumnDefinitions="3*,*"
+                  Margin="10,5"
+                  VerticalOptions="Center">
+                <Label Grid.Column="0"
+                       Style="{StaticResource TitleLabelStyle}"
+                       Text="Choose a mode" />
+                <Picker Grid.Column="1"
+                        SelectedItem="{Binding Mode}"
+                        VerticalOptions="Center">
+                    <Picker.Items>
+                        <x:String>Light</x:String>
+                        <x:String>Dark</x:String>
+                        <x:String>Default</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Grid>
+        </Border>
+        <Border Margin="0, 10">
+            <Grid ColumnDefinitions="3*,*"
+                  Margin="10,5"
+                  VerticalOptions="Center">
+                <Label Style="{StaticResource TitleLabelStyle}"
+                       Text="Set a time (minutes)" Grid.Column="0" />
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Margin="0,10,0,0"
+                           Style="{StaticResource TitleLabel2Style}"
+                           Text="{Binding SprintDuration, StringFormat='Sprint: {0:G}'}" />
+                    <Stepper HorizontalOptions="Center"
+                         Increment="1"
+                         Maximum="59"
+                         Minimum="1"
+                         Value="{Binding SprintDuration}" />
+                    <Label Margin="0,10,0,0"
+                           Style="{StaticResource TitleLabel2Style}"
+                           Text="{Binding ShortBreakDuration, StringFormat='Short: {0:G}'}" />
+                    <Stepper HorizontalOptions="Center"
+                             Increment="1"
+                             Maximum="59"
+                             Minimum="1"
+                             Value="{Binding ShortBreakDuration}" />
+                    <Label Style="{StaticResource TitleLabel2Style}"
+                           Text="{Binding LongBreakDuration, StringFormat='Long: {0:G}'}" />
+                    <Stepper HorizontalOptions="Center"
+                         Increment="1"
+                         Maximum="59"
+                         Minimum="1"
+                         Value="{Binding LongBreakDuration}" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+        <Border Margin="0, 10">
+            <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,5">
+                <Label Style="{StaticResource TitleLabelStyle}" Text="Customize the time" Grid.Column="0" />
+                <Grid ColumnDefinitions="3*,*" Grid.Column="1">
+                    <TimePicker Time="{Binding CustomizedTime}" />
+                    <Button Command="{Binding SetTimeCommand}" 
+                            Grid.Column="1" 
+                            HorizontalOptions="End" 
+                            Text="Set alarm" 
+                            WidthRequest="100" />
+                </Grid>
+
+            </Grid>
+        </Border>
+        <Border Margin="0, 10">
+            <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,5">
+                <Label Style="{StaticResource TitleLabelStyle}" Text="Sound" Grid.Column="0" />
+                <Grid ColumnDefinitions="3*,*" Grid.Column="1" VerticalOptions="Center">
+                    <Label Text="Loop playback:" VerticalOptions="Center" />
+                    <Switch Grid.Column="1" IsToggled="{Binding LoopPlayback}" VerticalOptions="Center" />
+                </Grid>
+            </Grid>
+        </Border>
+        <Border Margin="0, 10">
+            <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,5">
+                <Label Style="{StaticResource TitleLabelStyle}" Text="Options" Grid.Column="0" />
+                <Button Command="{Binding ClearCommand}" Grid.Column="1" HorizontalOptions="End" Margin="5,0" Text="Clear" WidthRequest="100" />
+            </Grid>
+        </Border>
     </VerticalStackLayout>
 </ContentPage>
