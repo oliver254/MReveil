@@ -8,14 +8,32 @@
              x:Class="Monbsoft.MReveil.Views.MainPage"
              x:DataType="viewmodels:MainViewModel">
 
-    <Grid VerticalOptions="FillAndExpand">
+    <Grid x:Name="GridLayout" VerticalOptions="FillAndExpand">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition />
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="PlayStates">
+                <VisualState x:Name="Pause">
+                    <VisualState.Setters>
+                        <Setter  TargetName="PlayButton"
+                                 Property="Button.Text"
+                                 Value="Play" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Playing">
+                    <VisualState.Setters>
+                        <Setter  TargetName="PlayButton"
+                                 Property="Button.Text"
+                                 Value="Pause" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <HorizontalStackLayout HorizontalOptions="Center" Padding="10" Spacing="10">
-            <Button Command="{Binding SetDurationCommand}"
+            <Button x:Name="SetDurationButton" Command="{Binding SetDurationCommand}"
                     CommandParameter="{x:Static models:ActivityType.Pomodoro}"
                     Text="Pomodoro" />
             <Button Command="{Binding SetDurationCommand}"
@@ -26,19 +44,21 @@
                     Text="Long break" />
         </HorizontalStackLayout>
         <controls:CircularClock x:Name="CircularClock"
-                                    Alarm="CircularClock_Alarm"
-                                    Duration="{Binding Duration}"
-                                    Grid.Row="1" />
-        <HorizontalStackLayout 
+                                State="{Binding State}"
+                                Grid.Row="1" />
+        <HorizontalStackLayout
             Grid.Row="2"
-            HorizontalOptions="Center" 
-            Padding="10" 
+            HorizontalOptions="Center"
+            Padding="10"
             Spacing="10">
+            <Button x:Name="StopButton" 
+                    Command="{Binding StopCommand}"
+                    Text="Stop"/>
             <Button x:Name="PlayButton"
-                        Clicked="PlayButton_Clicked"
-                        Text="Play" />
+                    Text="Play">
+            </Button>
         </HorizontalStackLayout>
-        <toolkit:MediaElement x:Name="MediaElement"
+        <toolkit:MediaElement x:Name="MediaElement"                                                            
                               IsVisible="False"
                               ShouldAutoPlay="False"
                               ShouldShowPlaybackControls="False"

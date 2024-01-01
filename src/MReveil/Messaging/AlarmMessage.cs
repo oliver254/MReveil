@@ -2,9 +2,9 @@
 
 namespace Monbsoft.MReveil.Messaging;
 
-public class DurationSetMessage : ValueChangedMessage<TimeSpan>
+public class AlarmMessage : ValueChangedMessage<bool>
 {
-    public DurationSetMessage(TimeSpan value)
+    public AlarmMessage(bool value) 
         : base(value)
     {
     }
