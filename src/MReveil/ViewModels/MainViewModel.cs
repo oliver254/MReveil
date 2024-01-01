@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Monbsoft.MReveil.Messaging;
 using Monbsoft.MReveil.Models;
 using Monbsoft.MReveil.Services;
 
@@ -37,6 +39,7 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     public void SetDuration(ActivityType activityType)
     {
+        WeakReferenceMessenger.Default.Send(new ResetAlarmMessage(true));
         switch (activityType)
         {
             case ActivityType.Pomodoro:
@@ -65,6 +68,7 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanStop))]
     public void Stop()
     {
+        WeakReferenceMessenger.Default.Send(new ResetAlarmMessage(true));
         _timerManager.Stop();
     }
     private bool CanStop()
@@ -85,10 +89,7 @@ public partial class MainViewModel : ObservableObject
                         break;
                     }
             }
-            if (e.PropertyName == nameof(State))
-            {
-                State = timerManager.State;
-            }
+
         }
     }
 }

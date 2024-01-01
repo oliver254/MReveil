@@ -14,14 +14,17 @@ public partial class CircularClock : ContentView
     public CircularClock()
     {
         InitializeComponent();
+        Time = new TimeSpan();
         _circularDrawable = new CircularDrawable();
         ClockView.Drawable = _circularDrawable;
 
         _timer = Dispatcher.CreateTimer();
         _timer.Interval = TimeSpan.FromMicroseconds(500);
         _timer.Tick += OnTimerTick;
-        _timer.Start();
-        Time = new TimeSpan();
+
+        Loaded += (s, e) => _timer.Start();
+        Unloaded += (s, e) => _timer.Stop();
+
 
     }
 
@@ -40,7 +43,7 @@ public partial class CircularClock : ContentView
     {
         get { return (IState)GetValue(StateProperty); }
         set { SetValue(StateProperty, value); }
-    }
+    }    
 
     private void OnTimerTick(object sender, EventArgs e)
     {

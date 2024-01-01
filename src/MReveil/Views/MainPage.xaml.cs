@@ -16,28 +16,38 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         BindingContext = viewModel;
-        WeakReferenceMessenger.Default.Register<AlarmMessage>(this, (r, m) =>
-        {
-            if(m is not null && m.Value)
-            {
-                ActiveAlarm();
-            }
-        });
-    }
-
-    ~MainPage()
-    {
-        WeakReferenceMessenger.Default.Unregister<AlarmMessage>(this);
-        CircularClock = null;
 
     }
 
     public ICommand PlayCommand { get; set; } 
     public ICommand AlarmCommand { get; set; }
 
-    private void ActiveAlarm()
+    protected override void OnAppearing()
     {
-        MediaElement.Play();
+        base.OnAppearing();
+
+        WeakReferenceMessenger.Default.Register<AlarmMessage>(this, (r, m) =>
+        {
+            if (m is not null && m.Value)
+            {
+                MediaElement.Play();
+            }
+        });
+        WeakReferenceMessenger.Default.Register<ResetAlarmMessage>(this, (r, m) =>
+        {
+            if(m is not null && m.Value)
+            {
+                MediaElement.Stop();
+            }
+        });
+
+    }
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        WeakReferenceMessenger.Default.Unregister<AlarmMessage>(this);
+        WeakReferenceMessenger.Default.Unregister<ResetAlarmMessage>(this);
+
     }
 
 }
