@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Monbsoft.MReveil.Messaging;
 using Monbsoft.MReveil.Models;
 using Monbsoft.MReveil.Services;
 
@@ -8,28 +10,24 @@ namespace Monbsoft.MReveil.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly TimerManager _timerManager;
-    private readonly SettingsService _settingsService;
-
     [ObservableProperty]
     public bool _alarm;
+
+    [ObservableProperty]
+    public SettingsViewModel _settings;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(StopCommand))]
     public IState _state;
 
-    public MainViewModel(TimerManager timerManager, SettingsService settingsService)
+
+    public MainViewModel(TimerManager timerManager, SettingsViewModel settingsViewModel)
     {
         //WeakReferenceMessenger.Default.Register<MainViewModel, DurationSetMessage>(this, (r, m) => r.Duration = m.Value);
         _timerManager = timerManager;
-        _settingsService = settingsService;
+        _settings = settingsViewModel;
         _state = _timerManager.State;
         _timerManager.PropertyChanged += TimerManager_PropertyChanged;
-    }
-
-    [RelayCommand]
-    public void ActivateAlarm()
-    {
-
     }
 
     [RelayCommand]
@@ -38,30 +36,25 @@ public partial class MainViewModel : ObservableObject
         _timerManager.Pause();
     }
 
-    [RelayCommand(CanExecute = nameof(CanStop))]
-    public void Stop()
-    {
-        _timerManager.Stop();
-    }
-
     [RelayCommand]
     public void SetDuration(ActivityType activityType)
     {
+        WeakReferenceMessenger.Default.Send(new ResetAlarmMessage(true));
         switch (activityType)
         {
             case ActivityType.Pomodoro:
                 {
-                    _timerManager.Play(TimeSpan.FromMinutes(_settingsService.Sprint));
+                    _timerManager.Play(TimeSpan.FromMinutes(_settings.SprintDuration));
                     break;
                 }
             case ActivityType.LongBreak:
                 {
-                    _timerManager.Play(TimeSpan.FromMinutes(_settingsService.LongBreak));
+                    _timerManager.Play(TimeSpan.FromMinutes(_settings.LongBreakDuration));
                     break;
                 }
             case ActivityType.ShortBreak:
                 {
-                    _timerManager.Play(TimeSpan.FromMinutes(_settingsService.ShortBreak));
+                    _timerManager.Play(TimeSpan.FromMinutes(_settings.ShortBreakDuration));
                     break;
                 }
             default:
@@ -72,16 +65,23 @@ public partial class MainViewModel : ObservableObject
         State = _timerManager.State;
     }
 
+    [RelayCommand(CanExecute = nameof(CanStop))]
+    public void Stop()
+    {
+        WeakReferenceMessenger.Default.Send(new ResetAlarmMessage(true));
+        _timerManager.Stop();
+    }
     private bool CanStop()
     {
         return State is CountdownState;
     }
+
     private void TimerManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         TimerManager timerManager = sender as TimerManager;
         if (timerManager is not null)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
                 case nameof(State):
                     {
@@ -89,10 +89,7 @@ public partial class MainViewModel : ObservableObject
                         break;
                     }
             }
-            if (e.PropertyName == nameof(State))
-            {
-                State = timerManager.State;
-            }
+
         }
     }
 }

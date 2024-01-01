@@ -7,6 +7,11 @@ public class SettingsService
         get => Preferences.Get(nameof(LongBreak), 15);
         set => Preferences.Set(nameof(LongBreak),value);
     }
+    public bool LoopPlayback
+    {
+        get => Preferences.Get(nameof(LoopPlayback), false);
+        set => Preferences.Set(nameof(LoopPlayback), value);
+    }
     public int ShortBreak
     {
         get => Preferences.Get(nameof(ShortBreak), 5);
