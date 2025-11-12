@@ -15,8 +15,15 @@
     <Color x:Key="Gray400">#919191</Color>
     <Color x:Key="Gray500">#6E6E6E</Color>
     <Color x:Key="Gray600">#404040</Color>
+    <Color x:Key="Gray800">#262626</Color>
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
+    
+    <!-- Pomodoro Colors -->
+    <Color x:Key="PomodoroRed">#EF4444</Color>
+    <Color x:Key="BreakGreen">#10B981</Color>
+    <Color x:Key="LongBreakBlue">#3B82F6</Color>
+    
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
@@ -28,9 +35,9 @@
     <SolidColorBrush x:Key="Gray400Brush" Color="{StaticResource Gray400}"/>
     <SolidColorBrush x:Key="Gray500Brush" Color="{StaticResource Gray500}"/>
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
+    <SolidColorBrush x:Key="Gray800Brush" Color="{StaticResource Gray800}"/>
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
-
     <Color x:Key="Yellow100Accent">#F7B548</Color>
     <Color x:Key="Yellow200Accent">#FFD590</Color>
     <Color x:Key="Yellow300Accent">#FFE5B9</Color>
