@@ -64,15 +64,22 @@
 	  <MauiXaml Update="Controls\CircularClock.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\JournalPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\StatisticsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="12.3.0" />
-	  <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="6.1.3" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="13.0.0" />
+	  <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="7.0.0" />
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+	  <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -82,6 +89,9 @@
 	<ItemGroup>
 	  <Compile Update="Controls\CircularClock.xaml.cs">
 	    <DependentUpon>CircularClock.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\JournalPage.xaml.cs">
+	    <DependentUpon>JournalPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 

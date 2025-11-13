@@ -10,6 +10,9 @@ namespace Monbsoft.MReveil.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly TimerManager _timerManager;
+    private readonly PomodoroSessionService _pomodoroSessionService;
+    private ActivityType _currentActivityType;
+
     [ObservableProperty]
     public bool _alarm;
 
@@ -21,11 +24,11 @@ public partial class MainViewModel : ObservableObject
     public IState _state;
 
 
-    public MainViewModel(TimerManager timerManager, SettingsViewModel settingsViewModel)
+    public MainViewModel(TimerManager timerManager, SettingsViewModel settingsViewModel, PomodoroSessionService pomodoroSessionService)
     {
-        //WeakReferenceMessenger.Default.Register<MainViewModel, DurationSetMessage>(this, (r, m) => r.Duration = m.Value);
         _timerManager = timerManager;
         _settings = settingsViewModel;
+        _pomodoroSessionService = pomodoroSessionService;
         _state = _timerManager.State;
         _timerManager.PropertyChanged += TimerManager_PropertyChanged;
     }
@@ -40,37 +43,34 @@ public partial class MainViewModel : ObservableObject
     public void SetDuration(ActivityType activityType)
     {
         WeakReferenceMessenger.Default.Send(new ResetAlarmMessage(true));
-        switch (activityType)
+        _currentActivityType = activityType;
+        
+        int duration = activityType switch
         {
-            case ActivityType.Pomodoro:
-                {
-                    _timerManager.Play(TimeSpan.FromMinutes(_settings.SprintDuration));
-                    break;
-                }
-            case ActivityType.LongBreak:
-                {
-                    _timerManager.Play(TimeSpan.FromMinutes(_settings.LongBreakDuration));
-                    break;
-                }
-            case ActivityType.ShortBreak:
-                {
-                    _timerManager.Play(TimeSpan.FromMinutes(_settings.ShortBreakDuration));
-                    break;
-                }
-            default:
-                {
-                    break;
-                }
-        }
+            ActivityType.Pomodoro => _settings.SprintDuration,
+            ActivityType.LongBreak => _settings.LongBreakDuration,
+            ActivityType.ShortBreak => _settings.ShortBreakDuration,
+            _ => 25
+        };
+
+        _pomodoroSessionService.StartSession(activityType, duration);
+        _timerManager.Play(TimeSpan.FromMinutes(duration));
         State = _timerManager.State;
     }
 
     [RelayCommand(CanExecute = nameof(CanStop))]
-    public void Stop()
+    public async void Stop()
     {
         WeakReferenceMessenger.Default.Send(new ResetAlarmMessage(true));
+        
+        if (_pomodoroSessionService.GetCurrentSession() is not null)
+        {
+            await _pomodoroSessionService.CompleteSessionAsync((int)(_timerManager.State.Time.TotalMinutes));
+        }
+        
         _timerManager.Stop();
     }
+
     private bool CanStop()
     {
         return State is CountdownState;

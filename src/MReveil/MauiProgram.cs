@@ -23,17 +23,34 @@ namespace Monbsoft.MReveil
             // pages
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<SettingsPage>();
+            builder.Services.AddSingleton<JournalPage>();
+            builder.Services.AddSingleton<StatisticsPage>();
 
             // view models
             builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddSingleton<SettingsViewModel>();
+            builder.Services.AddSingleton<JournalViewModel>();
+            builder.Services.AddSingleton<StatisticsViewModel>();
 
             // services
             builder.Services.AddSingleton<ThemeService>();
             builder.Services.AddSingleton<TimerManager>();
             builder.Services.AddSingleton<SettingsService>();
+            builder.Services.AddSingleton<DatabaseService>();
+            builder.Services.AddSingleton<StatisticsService>();
+            builder.Services.AddSingleton<PomodoroSessionService>();
 
-            return builder.Build();
+            // Initialize database
+            var app = builder.Build();
+            InitializeDatabase(app.Services);
+
+            return app;
+        }
+
+        private static void InitializeDatabase(IServiceProvider services)
+        {
+            var databaseService = services.GetRequiredService<DatabaseService>();
+            databaseService.InitializeAsync().Wait();
         }
     }
 }

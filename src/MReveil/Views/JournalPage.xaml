@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Monbsoft.MReveil.Views.JournalPage"
+    Title="📔 Journal">
+    
+    <Grid RowDefinitions="auto,*,auto" Padding="0">
+        
+        <!-- Header -->
+        <StackLayout Grid.Row="0" Padding="20,20,20,10" Spacing="5">
+            <Label Text="Journal" 
+                   Style="{StaticResource PageTitleStyle}"
+                   Margin="0,0,0,0"/>
+            <Label Text="Reflect on your day" 
+                   Style="{StaticResource SubtitleStyle}"
+                   Margin="20,0,20,0"/>
+        </StackLayout>
+
+        <!-- Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16" Spacing="16">
+                
+                <!-- Date Picker -->
+                <Border Padding="12"
+                        StrokeShape="RoundRectangle(8)"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                    <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
+                        <DatePicker Grid.Column="0"
+                                    Date="{Binding SelectedDate}"
+                                    Format="ddd, MMM d, yyyy"
+                                    VerticalOptions="Center" />
+                        <Button Grid.Column="1"
+                                Command="{Binding LoadEntryByDateCommand}"
+                                CommandParameter="{Binding SelectedDate}"
+                                Text="Load"
+                                Padding="12,8"
+                                FontSize="12"
+                                CornerRadius="6" />
+                    </Grid>
+                </Border>
+
+                <!-- Stats Section -->
+                <Border Padding="16"
+                        StrokeShape="RoundRectangle(12)"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label Text="🍅 Pomodoros" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
+                            <Label Text="{Binding CompletedPomodoros}" FontSize="20" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="⏱️ Focus Time" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
+                            <Label Text="{Binding TotalFocusMinutes, StringFormat='{0} min'}" FontSize="20" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Mood Selector -->
+                <Border Padding="16"
+                        StrokeShape="RoundRectangle(12)"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="😊 How was your day?" FontAttributes="Bold" FontSize="14"/>
+                        <HorizontalStackLayout HorizontalOptions="FillAndExpand" Spacing="8">
+                            <Button Command="{Binding SetMoodCommand}"
+                                    CommandParameter="😔"
+                                    Text="😔"
+                                    FontSize="24"
+                                    CornerRadius="8"
+                                    Padding="12"
+                                    HorizontalOptions="FillAndExpand"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"/>
+                            <Button Command="{Binding SetMoodCommand}"
+                                    CommandParameter="😐"
+                                    Text="😐"
+                                    FontSize="24"
+                                    CornerRadius="8"
+                                    Padding="12"
+                                    HorizontalOptions="FillAndExpand"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"/>
+                            <Button Command="{Binding SetMoodCommand}"
+                                    CommandParameter="😊"
+                                    Text="😊"
+                                    FontSize="24"
+                                    CornerRadius="8"
+                                    Padding="12"
+                                    HorizontalOptions="FillAndExpand"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"/>
+                            <Button Command="{Binding SetMoodCommand}"
+                                    CommandParameter="🤩"
+                                    Text="🤩"
+                                    FontSize="24"
+                                    CornerRadius="8"
+                                    Padding="12"
+                                    HorizontalOptions="FillAndExpand"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"/>
+                        </HorizontalStackLayout>
+                        <Label Text="{Binding Mood, StringFormat='Selected: {0}'}" HorizontalTextAlignment="Center" FontSize="12" TextColor="{StaticResource Primary}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Title Input -->
+                <Border Padding="12"
+                        StrokeShape="RoundRectangle(8)"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                    <Entry Placeholder="Entry title"
+                           Text="{Binding CurrentEntry.Title}"
+                           PlaceholderColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
+                </Border>
+
+                <!-- Notes Input -->
+                <Border Padding="12"
+                        StrokeShape="RoundRectangle(8)"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                    <Editor Placeholder="Write your reflections here..."
+                            Text="{Binding CurrentEntry.Content}"
+                            HeightRequest="150"
+                            PlaceholderColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Action Buttons -->
+        <StackLayout Grid.Row="2" Padding="16,20" Spacing="12">
+            <Button Command="{Binding SaveEntryCommand}"
+                    Text="💾 Save Entry"
+                    Style="{StaticResource PrimaryActionButtonStyle}"
+                    HorizontalOptions="FillAndExpand" />
+            <Button Command="{Binding DeleteEntryCommand}"
+                    Text="🗑️ Delete Entry"
+                    TextColor="{StaticResource White}"
+                    BackgroundColor="#EF4444"
+                    CornerRadius="8"
+                    Padding="16,12"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    HorizontalOptions="FillAndExpand" />
+        </StackLayout>
+    </Grid>
+</ContentPage>
