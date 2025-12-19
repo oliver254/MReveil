@@ -9,6 +9,9 @@ namespace Monbsoft.MReveil
     {
         public static MauiApp CreateMauiApp()
         {
+            // Initialize SQLite
+            SQLitePCL.Batteries_V2.Init();
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -40,17 +43,9 @@ namespace Monbsoft.MReveil
             builder.Services.AddSingleton<StatisticsService>();
             builder.Services.AddSingleton<PomodoroSessionService>();
 
-            // Initialize database
             var app = builder.Build();
-            InitializeDatabase(app.Services);
 
             return app;
-        }
-
-        private static void InitializeDatabase(IServiceProvider services)
-        {
-            var databaseService = services.GetRequiredService<DatabaseService>();
-            databaseService.InitializeAsync().Wait();
         }
     }
 }
