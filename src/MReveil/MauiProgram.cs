@@ -42,6 +42,7 @@ namespace Monbsoft.MReveil
             builder.Services.AddSingleton<DatabaseService>();
             builder.Services.AddSingleton<StatisticsService>();
             builder.Services.AddSingleton<PomodoroSessionService>();
+            builder.Services.AddSingleton<TaskService>();
 
             var app = builder.Build();
 

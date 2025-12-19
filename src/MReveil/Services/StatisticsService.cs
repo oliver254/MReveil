@@ -26,7 +26,6 @@ public class StatisticsService
             Date = date,
             CompletedPomodoros = completedPomodoros,
             TotalFocusMinutes = totalFocusMinutes,
-            Mood = journalEntry?.Mood ?? "😐",
             Notes = journalEntry?.Content ?? string.Empty
         };
     }
@@ -92,7 +91,6 @@ public class DailyStatistics
     public DateTime Date { get; set; }
     public int CompletedPomodoros { get; set; }
     public int TotalFocusMinutes { get; set; }
-    public string Mood { get; set; }
     public string Notes { get; set; }
 }
 

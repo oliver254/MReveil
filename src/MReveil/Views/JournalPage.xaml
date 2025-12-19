@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage 
+    x:Name="journalPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:Monbsoft.MReveil.Models"
+    xmlns:viewmodels="clr-namespace:Monbsoft.MReveil.ViewModels"
     x:Class="Monbsoft.MReveil.Views.JournalPage"
+    x:DataType="viewmodels:JournalViewModel"
     Title="📔 Journal">
     
-    <Grid RowDefinitions="auto,*,auto" Padding="0">
+    <Grid RowDefinitions="auto,*" Padding="0">
         
         <!-- Header -->
         <StackLayout Grid.Row="0" Padding="20,20,20,10" Spacing="5">
-            <Label Text="Journal" 
+            <Label Text="My Tasks" 
                    Style="{StaticResource PageTitleStyle}"
                    Margin="0,0,0,0"/>
-            <Label Text="Reflect on your day" 
+            <Label Text="Manage all your tasks in one place" 
                    Style="{StaticResource SubtitleStyle}"
                    Margin="20,0,20,0"/>
         </StackLayout>
@@ -21,30 +26,11 @@
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="16" Spacing="16">
                 
-                <!-- Date Picker -->
-                <Border Padding="12"
-                        StrokeShape="RoundRectangle(8)"
-                        Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
-                    <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
-                        <DatePicker Grid.Column="0"
-                                    Date="{Binding SelectedDate}"
-                                    Format="ddd, MMM d, yyyy"
-                                    VerticalOptions="Center" />
-                        <Button Grid.Column="1"
-                                Command="{Binding LoadEntryByDateCommand}"
-                                CommandParameter="{Binding SelectedDate}"
-                                Text="Load"
-                                Padding="12,8"
-                                FontSize="12"
-                                CornerRadius="6" />
-                    </Grid>
-                </Border>
-
                 <!-- Stats Section -->
                 <Border Padding="16"
                         StrokeShape="RoundRectangle(12)"
                         Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="12">
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12" RowSpacing="12">
                         <VerticalStackLayout Grid.Column="0" Spacing="4">
                             <Label Text="🍅 Pomodoros" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
                             <Label Text="{Binding CompletedPomodoros}" FontSize="20" FontAttributes="Bold"/>
@@ -53,90 +39,109 @@
                             <Label Text="⏱️ Focus Time" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
                             <Label Text="{Binding TotalFocusMinutes, StringFormat='{0} min'}" FontSize="20" FontAttributes="Bold"/>
                         </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="2" Spacing="4">
+                            <Label Text="✅ Tasks Done" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
+                            <Label Text="{Binding TasksCompleted}" FontSize="20" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
                     </Grid>
                 </Border>
 
-                <!-- Mood Selector -->
+                <!-- Tasks Section -->
                 <Border Padding="16"
                         StrokeShape="RoundRectangle(12)"
                         Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
                     <VerticalStackLayout Spacing="12">
-                        <Label Text="😊 How was your day?" FontAttributes="Bold" FontSize="14"/>
-                        <HorizontalStackLayout HorizontalOptions="FillAndExpand" Spacing="8">
-                            <Button Command="{Binding SetMoodCommand}"
-                                    CommandParameter="😔"
-                                    Text="😔"
-                                    FontSize="24"
-                                    CornerRadius="8"
-                                    Padding="12"
-                                    HorizontalOptions="FillAndExpand"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"/>
-                            <Button Command="{Binding SetMoodCommand}"
-                                    CommandParameter="😐"
-                                    Text="😐"
-                                    FontSize="24"
-                                    CornerRadius="8"
-                                    Padding="12"
-                                    HorizontalOptions="FillAndExpand"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"/>
-                            <Button Command="{Binding SetMoodCommand}"
-                                    CommandParameter="😊"
-                                    Text="😊"
-                                    FontSize="24"
-                                    CornerRadius="8"
-                                    Padding="12"
-                                    HorizontalOptions="FillAndExpand"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"/>
-                            <Button Command="{Binding SetMoodCommand}"
-                                    CommandParameter="🤩"
-                                    Text="🤩"
-                                    FontSize="24"
-                                    CornerRadius="8"
-                                    Padding="12"
-                                    HorizontalOptions="FillAndExpand"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"/>
-                        </HorizontalStackLayout>
-                        <Label Text="{Binding Mood, StringFormat='Selected: {0}'}" HorizontalTextAlignment="Center" FontSize="12" TextColor="{StaticResource Primary}"/>
+                        <Label Text="📝 All Tasks" FontAttributes="Bold" FontSize="16"/>
+                        
+                        <!-- Add Task -->
+                        <Grid ColumnDefinitions="*,auto" ColumnSpacing="8">
+                            <Entry Text="{Binding NewTaskTitle}"
+                                   Placeholder="Add new task title"
+                                   TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray100}}"
+                                   BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray700}}"
+                                   Padding="12,8"
+                                   FontSize="14"
+                                   CornerRadius="6"
+                                   ClearButtonVisibility="WhileEditing"
+                                   Style="{StaticResource EntryStyle}"/>
+
+                            <Button Text="➕"
+                                    Command="{Binding AddTaskCommand}"
+                                    CommandParameter="{Binding .}"
+                                    FontSize="14"
+                                    Padding="8"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource ColorAccent}, Dark={StaticResource ColorAccentDark}}"
+                                    TextColor="White"
+                                    CornerRadius="6"
+                                    HorizontalOptions="End"
+                                    Style="{StaticResource PrimaryButtonStyle}"/>
+                        </Grid>
+                        
+                        <!-- Liste simple pour test -->
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Tasks}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:TodoTask">
+                                    <Border Padding="12"
+                                            Margin="0,4"
+                                            StrokeShape="RoundRectangle(8)"
+                                            Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                                        <Grid ColumnDefinitions="auto,*,auto,auto,auto" ColumnSpacing="8">
+                                            <!-- Checkbox -->
+                                            <CheckBox Grid.Column="0"
+                                                      IsChecked="{Binding IsCompleted, Mode=TwoWay}"
+                                                      VerticalOptions="Center">
+                                                <CheckBox.Behaviors>
+                                                    <toolkit:EventToCommandBehavior 
+                                                        EventName="CheckedChanged"
+                                                        Command="{Binding BindingContext.ToggleTaskCompletionCommand, Source={x:Reference journalPage}}"
+                                                        CommandParameter="{Binding .}"/>
+                                                </CheckBox.Behaviors>
+                                            </CheckBox>
+
+                                            <!-- Title -->
+                                            <Label Grid.Column="1"
+                                                   Text="{Binding Title}"
+                                                   VerticalOptions="Center"
+                                                   TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToTextDecorationConverter}}"/>
+
+                                            <!-- Pomodoros Badge -->
+                                            <Label Grid.Column="2"
+                                                   Text="{Binding DisplayPomodoros}"
+                                                   FontSize="12"
+                                                   VerticalOptions="Center"
+                                                   IsVisible="{Binding PomodorosCount, Converter={StaticResource IsGreaterThanZeroConverter}}"/>
+
+                                            <!-- Start Pomodoro Button -->
+                                            <Button Grid.Column="3"
+                                                    Text="▶️"
+                                                    FontSize="14"
+                                                    Padding="8"
+                                                    BackgroundColor="Transparent"
+                                                    Command="{Binding BindingContext.StartPomodoroWithTaskCommand, Source={x:Reference journalPage}}"
+                                                    CommandParameter="{Binding .}"
+                                                    ToolTipProperties.Text="Start Pomodoro with this task"
+                                                    VerticalOptions="Center"
+                                                    IsVisible="{Binding IsCompleted, Converter={StaticResource InverseBoolConverter}}"/>
+
+                                            <!-- Delete Button -->
+                                            <Button Grid.Column="4"
+                                                    Text="🗑️"
+                                                    FontSize="14"
+                                                    Padding="8"
+                                                    BackgroundColor="Transparent"
+                                                    Command="{Binding BindingContext.DeleteTaskCommand, Source={x:Reference journalPage}}"
+                                                    CommandParameter="{Binding .}"
+                                                    VerticalOptions="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
                     </VerticalStackLayout>
-                </Border>
-
-                <!-- Title Input -->
-                <Border Padding="12"
-                        StrokeShape="RoundRectangle(8)"
-                        Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
-                    <Entry Placeholder="Entry title"
-                           Text="{Binding CurrentEntry.Title}"
-                           PlaceholderColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
-                </Border>
-
-                <!-- Notes Input -->
-                <Border Padding="12"
-                        StrokeShape="RoundRectangle(8)"
-                        Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
-                    <Editor Placeholder="Write your reflections here..."
-                            Text="{Binding CurrentEntry.Content}"
-                            HeightRequest="150"
-                            PlaceholderColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
                 </Border>
 
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Action Buttons -->
-        <StackLayout Grid.Row="2" Padding="16,20" Spacing="12">
-            <Button Command="{Binding SaveEntryCommand}"
-                    Text="💾 Save Entry"
-                    Style="{StaticResource PrimaryActionButtonStyle}"
-                    HorizontalOptions="FillAndExpand" />
-            <Button Command="{Binding DeleteEntryCommand}"
-                    Text="🗑️ Delete Entry"
-                    TextColor="{StaticResource White}"
-                    BackgroundColor="#EF4444"
-                    CornerRadius="8"
-                    Padding="16,12"
-                    FontSize="14"
-                    FontAttributes="Bold"
-                    HorizontalOptions="FillAndExpand" />
-        </StackLayout>
     </Grid>
 </ContentPage>

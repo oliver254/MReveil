@@ -19,6 +19,8 @@ public class PomodoroSession
 
     public bool IsCompleted { get; set; }
 
+    public int? TaskId { get; set; } // Clé étrangère vers TodoTask (nullable)
+
     public string Notes { get; set; } = string.Empty;
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;

@@ -19,7 +19,7 @@ public class JournalEntry
 
     public int TotalFocusMinutes { get; set; }
 
-    public string Mood { get; set; } = "😐"; // emoji ou value
+    public int TasksCompleted { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 

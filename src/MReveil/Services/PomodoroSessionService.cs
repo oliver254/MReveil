@@ -6,14 +6,16 @@ namespace Monbsoft.MReveil.Services;
 public class PomodoroSessionService
 {
     private readonly DatabaseService _databaseService;
+    private readonly TaskService _taskService;
     private PomodoroSession _currentSession;
 
-    public PomodoroSessionService(DatabaseService databaseService)
+    public PomodoroSessionService(DatabaseService databaseService, TaskService taskService)
     {
         _databaseService = databaseService;
+        _taskService = taskService;
     }
 
-    public void StartSession(ActivityType activityType, int plannedDuration)
+    public void StartSession(ActivityType activityType, int plannedDuration, int? taskId = null)
     {
         _currentSession = new PomodoroSession
         {
@@ -22,6 +24,7 @@ public class PomodoroSessionService
             PlannedDuration = plannedDuration,
             ActualDuration = 0,
             IsCompleted = false,
+            TaskId = taskId,
             CreatedAt = DateTime.Now
         };
     }
@@ -36,6 +39,13 @@ public class PomodoroSessionService
         _currentSession.CompletedAt = DateTime.Now;
 
         await _databaseService.SaveSessionAsync(_currentSession);
+        
+        // Si une tâche est associée et que c'est un Pomodoro, incrémenter le compteur
+        if (_currentSession.TaskId.HasValue && _currentSession.Type == ActivityType.Pomodoro)
+        {
+            await _taskService.IncrementPomodorosAsync(_currentSession.TaskId.Value);
+        }
+        
         _currentSession = null;
     }
 

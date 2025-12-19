@@ -47,6 +47,28 @@
                         Style="{StaticResource ModeSelectorButtonStyle}"
                         HorizontalOptions="FillAndExpand" />
             </HorizontalStackLayout>
+            
+            <!-- Current Task Display -->
+            <Border Padding="12"
+                    StrokeShape="RoundRectangle(8)"
+                    Stroke="{StaticResource Primary}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"
+                    IsVisible="{Binding CurrentTask, Converter={StaticResource IsNotNullConverter}}">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="🎯 Working on:" 
+                           FontSize="12" 
+                           FontAttributes="Bold" 
+                           TextColor="White"/>
+                    <Label Text="{Binding CurrentTask.Title}" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           TextColor="White"/>
+                    <Label Text="{Binding CurrentTask.DisplayPomodoros}" 
+                           FontSize="12" 
+                           TextColor="White"
+                           IsVisible="{Binding CurrentTask.PomodorosCount, Converter={StaticResource IsGreaterThanZeroConverter}}"/>
+                </VerticalStackLayout>
+            </Border>
         </StackLayout>
 
         <!-- Circular Clock -->

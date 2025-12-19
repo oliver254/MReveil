@@ -24,6 +24,7 @@ public class DatabaseService
             _connection = new SQLiteAsyncConnection(DbPath);
             await _connection.CreateTableAsync<PomodoroSession>();
             await _connection.CreateTableAsync<JournalEntry>();
+            await _connection.CreateTableAsync<TodoTask>();
             _initialized = true;
         }
         finally
@@ -138,5 +139,58 @@ public class DatabaseService
     {
         await EnsureInitializedAsync();
         await _connection!.DeleteAsync<JournalEntry>(id);
+    }
+
+    // TodoTask operations
+    public async Task<int> SaveTaskAsync(TodoTask task)
+    {
+        await EnsureInitializedAsync();
+        task.UpdatedAt = DateTime.Now;
+        if (task.Id == 0)
+            return await _connection!.InsertAsync(task);
+        else
+        {
+            await _connection!.UpdateAsync(task);
+            return task.Id;
+        }
+    }
+
+    public async Task<TodoTask?> GetTaskAsync(int id)
+    {
+        await EnsureInitializedAsync();
+        return await _connection!.FindAsync<TodoTask>(id);
+    }
+
+    public async Task<List<TodoTask>> GetTasksByDateAsync(DateTime date)
+    {
+        await EnsureInitializedAsync();
+        var startOfDay = date.Date;
+        var endOfDay = startOfDay.AddDays(1);
+
+        return await _connection!.Table<TodoTask>()
+            .Where(t => t.Date >= startOfDay && t.Date < endOfDay)
+            .ToListAsync();
+    }
+
+    public async Task<List<TodoTask>> GetAllTasksAsync()
+    {
+        await EnsureInitializedAsync();
+        return await _connection!.Table<TodoTask>()
+            .ToListAsync();
+    }
+
+    public async Task<List<TodoTask>> GetIncompleteTasksAsync()
+    {
+        await EnsureInitializedAsync();
+        return await _connection!.Table<TodoTask>()
+            .Where(t => !t.IsCompleted)
+            .OrderByDescending(t => t.Date)
+            .ToListAsync();
+    }
+
+    public async Task DeleteTaskAsync(int id)
+    {
+        await EnsureInitializedAsync();
+        await _connection!.DeleteAsync<TodoTask>(id);
     }
 }
