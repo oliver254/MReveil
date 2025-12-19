@@ -79,7 +79,9 @@
 	  <PackageReference Include="CommunityToolkit.Maui" Version="13.0.0" />
 	  <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="7.0.0" />
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-	  <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
+	  <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+	  <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10" />
+	  <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -93,9 +95,5 @@
 	  <Compile Update="Views\JournalPage.xaml.cs">
 	    <DependentUpon>JournalPage.xaml</DependentUpon>
 	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls" Version="10.0.10" />
 	</ItemGroup>
 </Project>

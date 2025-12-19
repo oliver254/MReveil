@@ -99,7 +99,6 @@ public partial class StatisticsViewModel : ObservableObject
         };
     }
 
-    [RelayCommand]
     public async Task LoadMonthlyStatsAsync(int year, int month)
     {
         var monthlyStats = await _statisticsService.GetMonthlyStatisticsAsync(year, month);

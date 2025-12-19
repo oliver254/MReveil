@@ -113,7 +113,6 @@ public partial class JournalViewModel : ObservableObject
         Mood = moodEmoji;
     }
 
-    [RelayCommand]
     public async Task LoadMonthlyViewAsync(int month, int year)
     {
         JournalEntries = await _databaseService.GetJournalEntriesAsync(
