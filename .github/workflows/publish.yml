@@ -10,6 +10,7 @@ on:
 
 env:
   DOTNET_WORKLOAD: 'maui'  # Le workload à installer
+  DOTNET_VERSION: '10.0' # The .NET SDK version to use    
 
 jobs:
   # Job pour Windows
@@ -20,11 +21,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install .NET SDK (latest)
+    - name: Install .NET SDK
       uses: actions/setup-dotnet@v3.2.0
       with:
         # Ne spécifie pas de version ici, .NET SDK sera installé en dernière version disponible
-        dotnet-version: 'latest'
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install .NET MAUI Workload
       run: dotnet workload install ${ env.DOTNET_WORKLOAD }
@@ -40,11 +41,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install .NET SDK (latest)
+    - name: Install .NET SDK
       uses: actions/setup-dotnet@v3.2.0
       with:
         # Ne spécifie pas de version ici, .NET SDK sera installé en dernière version disponible
-        dotnet-version: 'latest'
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install .NET MAUI Workload
       run: dotnet workload install ${ env.DOTNET_WORKLOAD }
@@ -60,11 +61,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install .NET SDK (latest)
+    - name: Install .NET SDK
       uses: actions/setup-dotnet@v3.2.0
       with:
         # Ne spécifie pas de version ici, .NET SDK sera installé en dernière version disponible
-        dotnet-version: 'latest'
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install .NET MAUI Workload
       run: dotnet workload install ${ env.DOTNET_WORKLOAD }
