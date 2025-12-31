@@ -1,4 +1,4 @@
-name: build
+name: publish
 
 on:
   push:
@@ -109,11 +109,11 @@ jobs:
       with:
         files: ./publish/macos/*
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.MREVEIL_GITHUB_TOKEN }}
 
     - name: Upload Linux build to GitHub Release
       uses: softprops/action-gh-release@v1
       with:
         files: ./publish/linux/*
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.MREVEIL_GITHUB_TOKEN }}
