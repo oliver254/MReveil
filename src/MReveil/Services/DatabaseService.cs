@@ -3,12 +3,13 @@ using Monbsoft.MReveil.Models;
 
 namespace Monbsoft.MReveil.Services;
 
-public class DatabaseService
+public class DatabaseService : IDisposable
 {
     private SQLiteAsyncConnection? _connection;
     private static readonly string DbPath = Path.Combine(FileSystem.AppDataDirectory, "mreveil.db");
     private readonly SemaphoreSlim _initSemaphore = new(1, 1);
     private bool _initialized;
+    private bool _disposed;
 
     public async Task InitializeAsync()
     {
@@ -35,6 +36,8 @@ public class DatabaseService
 
     private async Task EnsureInitializedAsync()
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        
         if (!_initialized)
         {
             await InitializeAsync();
@@ -44,14 +47,16 @@ public class DatabaseService
     // PomodoroSession operations
     public async Task<int> SaveSessionAsync(PomodoroSession session)
     {
+        ArgumentNullException.ThrowIfNull(session);
         await EnsureInitializedAsync();
+        
         if (session.Id == 0)
             return await _connection!.InsertAsync(session);
         else
             return await _connection!.UpdateAsync(session);
     }
 
-    public async Task<PomodoroSession> GetSessionAsync(int id)
+    public async Task<PomodoroSession?> GetSessionAsync(int id)
     {
         await EnsureInitializedAsync();
         return await _connection!.FindAsync<PomodoroSession>(id);
@@ -102,7 +107,9 @@ public class DatabaseService
     // JournalEntry operations
     public async Task<int> SaveJournalEntryAsync(JournalEntry entry)
     {
+        ArgumentNullException.ThrowIfNull(entry);
         await EnsureInitializedAsync();
+        
         entry.UpdatedAt = DateTime.Now;
         if (entry.Id == 0)
             return await _connection!.InsertAsync(entry);
@@ -110,13 +117,13 @@ public class DatabaseService
             return await _connection!.UpdateAsync(entry);
     }
 
-    public async Task<JournalEntry> GetJournalEntryAsync(int id)
+    public async Task<JournalEntry?> GetJournalEntryAsync(int id)
     {
         await EnsureInitializedAsync();
         return await _connection!.FindAsync<JournalEntry>(id);
     }
 
-    public async Task<JournalEntry> GetJournalEntryByDateAsync(DateTime date)
+    public async Task<JournalEntry?> GetJournalEntryByDateAsync(DateTime date)
     {
         await EnsureInitializedAsync();
         var startOfDay = date.Date;
@@ -144,7 +151,9 @@ public class DatabaseService
     // TodoTask operations
     public async Task<int> SaveTaskAsync(TodoTask task)
     {
+        ArgumentNullException.ThrowIfNull(task);
         await EnsureInitializedAsync();
+        
         task.UpdatedAt = DateTime.Now;
         if (task.Id == 0)
             return await _connection!.InsertAsync(task);
@@ -192,5 +201,26 @@ public class DatabaseService
     {
         await EnsureInitializedAsync();
         await _connection!.DeleteAsync<TodoTask>(id);
+    }
+
+    // IDisposable implementation
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+
+        if (disposing)
+        {
+            _connection?.CloseAsync().GetAwaiter().GetResult();
+            _initSemaphore?.Dispose();
+        }
+
+        _disposed = true;
     }
 }
