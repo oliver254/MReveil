@@ -28,7 +28,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install .NET MAUI Workload
-      run: dotnet workload install ${ env.DOTNET_WORKLOAD }
+      run: dotnet workload install ${{ env.DOTNET_WORKLOAD }}
 
     - name: Build MReveil for Windows
       run: dotnet publish "src/MReveil/MReveil.csproj" -c Release -r win-x64 --self-contained false --output ./publish/windows
@@ -48,7 +48,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install .NET MAUI Workload
-      run: dotnet workload install ${ env.DOTNET_WORKLOAD }
+      run: dotnet workload install ${{ env.DOTNET_WORKLOAD }}
 
     - name: Build MReveil for macOS
       run: dotnet publish "src/MReveil/MReveil.csproj" -c Release -r osx-x64 --self-contained false --output ./publish/macos
@@ -68,7 +68,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install .NET MAUI Workload
-      run: dotnet workload install ${ env.DOTNET_WORKLOAD }
+      run: dotnet workload install ${{ env.DOTNET_WORKLOAD }}
 
     - name: Build MReveil for Linux
       run: dotnet publish "src/MReveil/MReveil.csproj" -c Release -r linux-x64 --self-contained false --output ./publish/linux
