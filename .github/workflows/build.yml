@@ -7,7 +7,7 @@ on:
     branches: [ "dev" ]
     
 env:
-  DOTNET_VERSION: '8.0' # The .NET SDK version to use    
+  DOTNET_VERSION: '10.0' # The .NET SDK version to use    
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: Install .NET 8
+    - name: Install .NET
       uses: actions/setup-dotnet@v3.2.0
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
