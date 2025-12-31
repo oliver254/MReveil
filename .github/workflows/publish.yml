@@ -6,11 +6,11 @@ on:
   pull_request:
     branches: [ "dev" ]
   release:
-    types: [created]  # Déclenche l'action lors de la création d'une release
+    types: [created]  # Déclenche lors de la création d'une release
 
 env:
-  DOTNET_VERSION: '10.0'  # La version .NET SDK à utiliser
   DOTNET_WORKLOAD: 'maui'  # Le workload à installer
+  DOTNET_VERSION: '10.0' # The .NET SDK version to use    
 
 jobs:
   # Job pour Windows
@@ -21,22 +21,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install .NET SDK ${{ env.DOTNET_VERSION }}
+    - name: Install .NET SDK
       uses: actions/setup-dotnet@v3.2.0
       with:
+        # Ne spécifie pas de version ici, .NET SDK sera installé en dernière version disponible
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install .NET MAUI Workload
-      run: dotnet workload install ${ env.DOTNET_WORKLOAD }
+      run: dotnet workload install ${{ env.DOTNET_WORKLOAD }}
 
-    - name: Build and Publish MReveil for Windows
+    - name: Build MReveil for Windows
       run: dotnet publish "src/MReveil/MReveil.csproj" -c Release -r win-x64 --self-contained false --output ./publish/windows
-
-    - name: Upload Windows build artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: windows-build
-        path: ./publish/windows
 
   # Job pour macOS
   build-macos:
@@ -46,22 +41,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install .NET SDK ${{ env.DOTNET_VERSION }}
+    - name: Install .NET SDK
       uses: actions/setup-dotnet@v3.2.0
       with:
+        # Ne spécifie pas de version ici, .NET SDK sera installé en dernière version disponible
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install .NET MAUI Workload
-      run: dotnet workload install ${ env.DOTNET_WORKLOAD }
+      run: dotnet workload install ${{ env.DOTNET_WORKLOAD }}
 
-    - name: Build and Publish MReveil for macOS
+    - name: Build MReveil for macOS
       run: dotnet publish "src/MReveil/MReveil.csproj" -c Release -r osx-x64 --self-contained false --output ./publish/macos
-
-    - name: Upload macOS build artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: macos-build
-        path: ./publish/macos
 
   # Job pour Linux
   build-linux:
@@ -71,38 +61,45 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install .NET SDK ${{ env.DOTNET_VERSION }}
+    - name: Install .NET SDK
       uses: actions/setup-dotnet@v3.2.0
       with:
+        # Ne spécifie pas de version ici, .NET SDK sera installé en dernière version disponible
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install .NET MAUI Workload
-      run: dotnet workload install ${ env.DOTNET_WORKLOAD }
+      run: dotnet workload install ${{ env.DOTNET_WORKLOAD }}
 
-    - name: Build and Publish MReveil for Linux
+    - name: Build MReveil for Linux
       run: dotnet publish "src/MReveil/MReveil.csproj" -c Release -r linux-x64 --self-contained false --output ./publish/linux
 
-    - name: Upload Linux build artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: linux-build
-        path: ./publish/linux
-
-  # Job pour télécharger les artefacts dans la release GitHub
+  # Job pour créer une release GitHub et y ajouter les artefacts
   release:
     runs-on: ubuntu-latest
-    needs: [build-windows, build-macos, build-linux]  # Assure-toi que les builds sont terminés avant ce job
+    needs: [build-windows, build-macos, build-linux]  # Ce job dépend des autres jobs de build
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Create GitHub Release
+      id: release
+      uses: gh actions/create-release@v1
+      with:
+        tag_name: ${{ github.ref }}  # Utiliser le tag de la release
+        release_name: "Release ${{ github.ref }}"
+        body: "Release automatique des artefacts"
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.MREVEIL_GITHUB_TOKEN }}
 
     - name: Upload Windows build to GitHub Release
       uses: softprops/action-gh-release@v1
       with:
         files: ./publish/windows/*
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.MREVEIL_GITHUB_TOKEN }}
 
     - name: Upload macOS build to GitHub Release
       uses: softprops/action-gh-release@v1

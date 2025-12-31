@@ -7,11 +7,23 @@
     Shell.FlyoutBehavior="Flyout">
 
     <ShellContent
-        Title="Reveil"
+        Title="🍅 Timer"
+        Icon="timer.png"
         ContentTemplate="{DataTemplate views:MainPage}"
         Route="MainPage" />
     <ShellContent
-        Title="Settings"
+        Title="📔 Journal"
+        Icon="journal.png"
+        ContentTemplate="{DataTemplate views:JournalPage}"
+        Route="JournalPage" />
+    <ShellContent
+        Title="📊 Statistics"
+        Icon="stats.png"
+        ContentTemplate="{DataTemplate views:StatisticsPage}"
+        Route="StatisticsPage" />
+    <ShellContent
+        Title="⚙️ Settings"
+        Icon="settings.png"
         ContentTemplate="{DataTemplate views:SettingsPage}"
         Route="SettingsPage" />
 

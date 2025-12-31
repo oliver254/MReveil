@@ -10,6 +10,10 @@ namespace Monbsoft.MReveil.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly TimerManager _timerManager;
+    private readonly PomodoroSessionService _pomodoroSessionService;
+    private readonly TaskService _taskService;
+    private ActivityType _currentActivityType;
+
     [ObservableProperty]
     public bool _alarm;
 
@@ -20,14 +24,24 @@ public partial class MainViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(StopCommand))]
     public IState _state;
 
+    [ObservableProperty]
+    public TodoTask? _currentTask;
 
-    public MainViewModel(TimerManager timerManager, SettingsViewModel settingsViewModel)
+
+    public MainViewModel(TimerManager timerManager, SettingsViewModel settingsViewModel, PomodoroSessionService pomodoroSessionService, TaskService taskService)
     {
-        //WeakReferenceMessenger.Default.Register<MainViewModel, DurationSetMessage>(this, (r, m) => r.Duration = m.Value);
         _timerManager = timerManager;
         _settings = settingsViewModel;
+        _pomodoroSessionService = pomodoroSessionService;
+        _taskService = taskService;
         _state = _timerManager.State;
         _timerManager.PropertyChanged += TimerManager_PropertyChanged;
+        
+        // S'abonner au message pour démarrer un Pomodoro avec une tâche
+        WeakReferenceMessenger.Default.Register<StartPomodoroWithTaskMessage>(this, (r, m) =>
+        {
+            SetDurationWithTask(ActivityType.Pomodoro, m.TaskId);
+        });
     }
 
     [RelayCommand]
@@ -39,38 +53,58 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     public void SetDuration(ActivityType activityType)
     {
+        SetDurationWithTask(activityType, null);
+    }
+
+    private void SetDurationWithTask(ActivityType activityType, int? taskId)
+    {
         WeakReferenceMessenger.Default.Send(new ResetAlarmMessage(true));
-        switch (activityType)
+        _currentActivityType = activityType;
+        
+        int duration = activityType switch
         {
-            case ActivityType.Pomodoro:
-                {
-                    _timerManager.Play(TimeSpan.FromMinutes(_settings.SprintDuration));
-                    break;
-                }
-            case ActivityType.LongBreak:
-                {
-                    _timerManager.Play(TimeSpan.FromMinutes(_settings.LongBreakDuration));
-                    break;
-                }
-            case ActivityType.ShortBreak:
-                {
-                    _timerManager.Play(TimeSpan.FromMinutes(_settings.ShortBreakDuration));
-                    break;
-                }
-            default:
-                {
-                    break;
-                }
-        }
+            ActivityType.Pomodoro => Settings.SprintDuration,
+            ActivityType.LongBreak => Settings.LongBreakDuration,
+            ActivityType.ShortBreak => Settings.ShortBreakDuration,
+            _ => 25
+        };
+
+        _pomodoroSessionService.StartSession(activityType, duration, taskId);
+        _timerManager.Play(TimeSpan.FromMinutes(duration));
         State = _timerManager.State;
+        
+        // Charger la tâche courante si une tâche est associée
+        LoadCurrentTask(taskId);
+    }
+
+    private async void LoadCurrentTask(int? taskId)
+    {
+        if (taskId.HasValue)
+        {
+            CurrentTask = await _taskService.GetTaskAsync(taskId.Value);
+        }
+        else
+        {
+            CurrentTask = null;
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanStop))]
-    public void Stop()
+    public async void Stop()
     {
         WeakReferenceMessenger.Default.Send(new ResetAlarmMessage(true));
+        
+        if (_pomodoroSessionService.GetCurrentSession() is not null)
+        {
+            await _pomodoroSessionService.CompleteSessionAsync((int)(_timerManager.State.Time.TotalMinutes));
+        }
+        
         _timerManager.Stop();
+        
+        // Réinitialiser la tâche courante
+        CurrentTask = null;
     }
+
     private bool CanStop()
     {
         return State is CountdownState;

@@ -4,89 +4,177 @@
              xmlns:viewmodels="clr-namespace:Monbsoft.MReveil.ViewModels"
              x:Class="Monbsoft.MReveil.Views.SettingsPage"
              x:DataType="viewmodels:SettingsViewModel"
-             Title="Settings">
-    <VerticalStackLayout RadioButtonGroup.GroupName="Mode"
-                         RadioButtonGroup.SelectedValue="{Binding Mode}" Padding="8,0">
+             Title="⚙️ Settings">
+    <ScrollView>
+        <VerticalStackLayout RadioButtonGroup.GroupName="Mode"
+                             RadioButtonGroup.SelectedValue="{Binding Mode}" 
+                             Padding="0">
 
-        <Border Margin="0, 10">
-            <Grid ColumnDefinitions="3*,*"
-                  Margin="10,5"
-                  VerticalOptions="Center">
-                <Label Grid.Column="0"
-                       Style="{StaticResource TitleLabelStyle}"
-                       Text="Choose a mode" />
-                <Picker Grid.Column="1"
-                        SelectedItem="{Binding Mode}"
-                        VerticalOptions="Center">
-                    <Picker.Items>
-                        <x:String>Light</x:String>
-                        <x:String>Dark</x:String>
-                        <x:String>Default</x:String>
-                    </Picker.Items>
-                </Picker>
-            </Grid>
-        </Border>
-        <Border Margin="0, 10">
-            <Grid ColumnDefinitions="3*,*"
-                  Margin="10,5"
-                  VerticalOptions="Center">
-                <Label Style="{StaticResource TitleLabelStyle}"
-                       Text="Set a time (minutes)" Grid.Column="0" />
-                <VerticalStackLayout Grid.Column="1">
-                    <Label Margin="0,10,0,0"
-                           Style="{StaticResource TitleLabel2Style}"
-                           Text="{Binding SprintDuration, StringFormat='Sprint: {0:G}'}" />
-                    <Stepper HorizontalOptions="Center"
-                         Increment="1"
-                         Maximum="59"
-                         Minimum="1"
-                         Value="{Binding SprintDuration}" />
-                    <Label Margin="0,10,0,0"
-                           Style="{StaticResource TitleLabel2Style}"
-                           Text="{Binding ShortBreakDuration, StringFormat='Short: {0:G}'}" />
-                    <Stepper HorizontalOptions="Center"
-                             Increment="1"
-                             Maximum="59"
-                             Minimum="1"
-                             Value="{Binding ShortBreakDuration}" />
-                    <Label Style="{StaticResource TitleLabel2Style}"
-                           Text="{Binding LongBreakDuration, StringFormat='Long: {0:G}'}" />
-                    <Stepper HorizontalOptions="Center"
-                         Increment="1"
-                         Maximum="59"
-                         Minimum="1"
-                         Value="{Binding LongBreakDuration}" />
+            <!-- Header -->
+            <StackLayout Padding="20,20,20,10" Spacing="5">
+                <Label Text="Settings" 
+                       Style="{StaticResource PageTitleStyle}"
+                       Margin="0,0,0,0"/>
+                <Label Text="Customize your Pomodoro experience" 
+                       Style="{StaticResource SubtitleStyle}"
+                       Margin="20,0,20,0"/>
+            </StackLayout>
+
+            <!-- Theme Section -->
+            <Border Margin="12, 10, 12, 10"
+                    Padding="16"
+                    StrokeShape="RoundRectangle(12)"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="🎨 Choose a Theme" 
+                           Style="{StaticResource TitleLabelStyle}"
+                           Margin="0,0,0,8"/>
+                    <Picker SelectedItem="{Binding Mode}"
+                            VerticalOptions="Center">
+                        <Picker.Items>
+                            <x:String>Light</x:String>
+                            <x:String>Dark</x:String>
+                            <x:String>Default</x:String>
+                        </Picker.Items>
+                    </Picker>
                 </VerticalStackLayout>
-            </Grid>
-        </Border>
-        <Border Margin="0, 10">
-            <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,5">
-                <Label Style="{StaticResource TitleLabelStyle}" Text="Customize the time" Grid.Column="0" />
-                <Grid ColumnDefinitions="3*,*" Grid.Column="1">
-                    <TimePicker Time="{Binding CustomizedTime}" />
-                    <Button Command="{Binding SetTimeCommand}" 
-                            Grid.Column="1" 
-                            HorizontalOptions="End" 
-                            Text="Set alarm" 
-                            WidthRequest="100" />
-                </Grid>
+            </Border>
 
-            </Grid>
-        </Border>
-        <Border Margin="0, 10">
-            <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,5">
-                <Label Style="{StaticResource TitleLabelStyle}" Text="Sound" Grid.Column="0" />
-                <Grid Grid.Column="1" VerticalOptions="Center">
-                    <Label Text="Loop playback:" VerticalOptions="Center" />
-                    <Switch Grid.Column="1" IsToggled="{Binding LoopPlayback}" VerticalOptions="Center" />
+            <!-- Duration Settings Section -->
+            <Border Margin="12, 10, 12, 10"
+                    Padding="16"
+                    StrokeShape="RoundRectangle(12)"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="⏱️ Set Session Durations (minutes)" 
+                           Style="{StaticResource TitleLabelStyle}"
+                           Margin="0,0,0,0"/>
+                    
+                    <!-- Sprint Duration -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="🍅 Pomodoro Sprint" 
+                               FontAttributes="Bold"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray700}, Dark={StaticResource Gray200}}"/>
+                        <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
+                            <Slider Grid.Column="0"
+                                    Minimum="1"
+                                    Maximum="59"
+                                    Value="{Binding SprintDuration}"
+                                    VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding SprintDuration, StringFormat='{0} min'}"
+                                   FontAttributes="Bold"
+                                   FontSize="14"
+                                   WidthRequest="60"
+                                   HorizontalTextAlignment="End"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                    
+                    <!-- Short Break Duration -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="☕ Short Break" 
+                               FontAttributes="Bold"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray700}, Dark={StaticResource Gray200}}"/>
+                        <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
+                            <Slider Grid.Column="0"
+                                    Minimum="1"
+                                    Maximum="59"
+                                    Value="{Binding ShortBreakDuration}"
+                                    VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding ShortBreakDuration, StringFormat='{0} min'}"
+                                   FontAttributes="Bold"
+                                   FontSize="14"
+                                   WidthRequest="60"
+                                   HorizontalTextAlignment="End"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                    
+                    <!-- Long Break Duration -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="🏖️ Long Break" 
+                               FontAttributes="Bold"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray700}, Dark={StaticResource Gray200}}"/>
+                        <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
+                            <Slider Grid.Column="0"
+                                    Minimum="1"
+                                    Maximum="59"
+                                    Value="{Binding LongBreakDuration}"
+                                    VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding LongBreakDuration, StringFormat='{0} min'}"
+                                   FontAttributes="Bold"
+                                   FontSize="14"
+                                   WidthRequest="60"
+                                   HorizontalTextAlignment="End"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Custom Time Alarm Section -->
+            <Border Margin="12, 10, 12, 10"
+                    Padding="16"
+                    StrokeShape="RoundRectangle(12)"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="⏰ Set a Custom Alarm" 
+                           Style="{StaticResource TitleLabelStyle}"
+                           Margin="0,0,0,0"/>
+                    <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
+                        <TimePicker Grid.Column="0"
+                                    Time="{Binding CustomizedTime}" />
+                        <Button Grid.Column="1" 
+                                Command="{Binding SetTimeCommand}" 
+                                Text="Set"
+                                Padding="16,8"
+                                FontSize="14"
+                                Style="{StaticResource PrimaryActionButtonStyle}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Sound Settings Section -->
+            <Border Margin="12, 10, 12, 10"
+                    Padding="16"
+                    StrokeShape="RoundRectangle(12)"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                <Grid ColumnDefinitions="*,auto" ColumnSpacing="12" VerticalOptions="Center">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="🔔 Sound Settings" 
+                               FontAttributes="Bold"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}"/>
+                        <Label Text="Loop playback on alarm" 
+                               FontSize="13"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+                    <Switch Grid.Column="1" 
+                            IsToggled="{Binding LoopPlayback}" 
+                            VerticalOptions="Center" />
                 </Grid>
-            </Grid>
-        </Border>
-        <Border Margin="0, 10">
-            <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,5">
-                <Label Style="{StaticResource TitleLabelStyle}" Text="Options" Grid.Column="0" />
-                <Button Command="{Binding ClearCommand}" Grid.Column="1" HorizontalOptions="End" Margin="5,0" Text="Clear" />
-            </Grid>
-        </Border>
-    </VerticalStackLayout>
+            </Border>
+
+            <!-- Options Section -->
+            <Border Margin="12, 10, 12, 20"
+                    Padding="16"
+                    StrokeShape="RoundRectangle(12)"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                <Button Command="{Binding ClearCommand}" 
+                        Text="🗑️ Reset All Settings"
+                        TextColor="{StaticResource White}"
+                        BackgroundColor="#EF4444"
+                        CornerRadius="8"
+                        Padding="16,12"
+                        FontSize="14"
+                        FontAttributes="Bold" />
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

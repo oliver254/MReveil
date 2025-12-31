@@ -18,7 +18,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: Install .NET ${{ env.DOTNET_VERSION }}
+    - name: Install .NET
       uses: actions/setup-dotnet@v3.2.0
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}

@@ -2,18 +2,21 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:drawables="clr-namespace:Monbsoft.MReveil.Drawables"
-             x:Class="Monbsoft.MReveil.Controls.CircularClock">
-    <ContentView.Resources>
-        <drawables:CircularDrawable x:Key="circularDrawable" />
-    </ContentView.Resources>
+             x:Class="Monbsoft.MReveil.Controls.CircularClock"
+             x:Name="Root">
     <Grid>
-        <GraphicsView  x:Name="ClockView"
-                       HeightRequest="400"
-                       WidthRequest="400" />
+        <GraphicsView x:Name="ClockView"
+                      HeightRequest="400"
+                      WidthRequest="400"
+                      HorizontalOptions="Center"
+                      VerticalOptions="Center" />
+        
         <Label x:Name="TimeLabel"
                FontSize="52"
+               FontAttributes="Bold"
                HorizontalOptions="Center"
-               Text=""
-               VerticalOptions="Center" />
+               VerticalOptions="Center"
+               TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
+               Text="00:00:00" />
     </Grid>
 </ContentView>
