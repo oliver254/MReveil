@@ -1,0 +1,119 @@
+name: publish
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+  release:
+    types: [created]  # Déclenche l'action lors de la création d'une release
+
+env:
+  DOTNET_VERSION: '10.0'  # La version .NET SDK à utiliser
+  DOTNET_WORKLOAD: 'maui'  # Le workload à installer
+
+jobs:
+  # Job pour Windows
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install .NET SDK ${{ env.DOTNET_VERSION }}
+      uses: actions/setup-dotnet@v3.2.0
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install .NET MAUI Workload
+      run: dotnet workload install ${ env.DOTNET_WORKLOAD }
+
+    - name: Build and Publish MReveil for Windows
+      run: dotnet publish "src/MReveil/MReveil.csproj" -c Release -r win-x64 --self-contained false --output ./publish/windows
+
+    - name: Upload Windows build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-build
+        path: ./publish/windows
+
+  # Job pour macOS
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install .NET SDK ${{ env.DOTNET_VERSION }}
+      uses: actions/setup-dotnet@v3.2.0
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install .NET MAUI Workload
+      run: dotnet workload install ${ env.DOTNET_WORKLOAD }
+
+    - name: Build and Publish MReveil for macOS
+      run: dotnet publish "src/MReveil/MReveil.csproj" -c Release -r osx-x64 --self-contained false --output ./publish/macos
+
+    - name: Upload macOS build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: macos-build
+        path: ./publish/macos
+
+  # Job pour Linux
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install .NET SDK ${{ env.DOTNET_VERSION }}
+      uses: actions/setup-dotnet@v3.2.0
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install .NET MAUI Workload
+      run: dotnet workload install ${ env.DOTNET_WORKLOAD }
+
+    - name: Build and Publish MReveil for Linux
+      run: dotnet publish "src/MReveil/MReveil.csproj" -c Release -r linux-x64 --self-contained false --output ./publish/linux
+
+    - name: Upload Linux build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: linux-build
+        path: ./publish/linux
+
+  # Job pour télécharger les artefacts dans la release GitHub
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-windows, build-macos, build-linux]  # Assure-toi que les builds sont terminés avant ce job
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Upload Windows build to GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./publish/windows/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload macOS build to GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./publish/macos/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.MREVEIL_GITHUB_TOKEN }}
+
+    - name: Upload Linux build to GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./publish/linux/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.MREVEIL_GITHUB_TOKEN }}
